@@ -1,0 +1,1100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CPM Exam Coach — AIPMM Certified Product Manager</title>
+<style>
+:root{--bg:#f6f7fb;--card:#ffffff;--ink:#1c2333;--mut:#6b7280;--acc:#4353ff;--acc2:#eef0ff;--ok:#0e9f6e;--okbg:#e6f7f1;--bad:#e02424;--badbg:#fdeaea;--warn:#c27803;--line:#e5e7eb;--r:14px}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--ink);line-height:1.5;padding-bottom:60px}
+header{background:var(--card);border-bottom:1px solid var(--line);padding:14px 22px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;position:sticky;top:0;z-index:20}
+header h1{font-size:17px;font-weight:700;margin-right:auto;cursor:pointer}
+header h1 span{color:var(--acc)}
+.vtoggles{display:flex;gap:8px;align-items:center}
+.tog{display:flex;align-items:center;gap:6px;font-size:12.5px;color:var(--mut);background:var(--bg);border:1px solid var(--line);border-radius:20px;padding:5px 12px;cursor:pointer;user-select:none;transition:.15s}
+.tog.on{background:var(--acc2);border-color:var(--acc);color:var(--acc);font-weight:600}
+main{max-width:860px;margin:0 auto;padding:22px 16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:20px;margin-bottom:16px}
+h2{font-size:20px;margin-bottom:6px}
+h3{font-size:15px;margin:14px 0 6px}
+.sub{color:var(--mut);font-size:13.5px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin-top:14px}
+.mode{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:18px;cursor:pointer;transition:.15s}
+.mode:hover{border-color:var(--acc);box-shadow:0 4px 14px rgba(67,83,255,.10);transform:translateY(-1px)}
+.mode .ic{font-size:24px}.mode b{display:block;margin:6px 0 3px;font-size:15px}.mode p{font-size:12.5px;color:var(--mut)}
+button{font:inherit;cursor:pointer;border:none;border-radius:10px;padding:10px 18px;font-weight:600}
+.btn{background:var(--acc);color:#fff}.btn:hover{filter:brightness(1.08)}
+.btn2{background:var(--acc2);color:var(--acc)}.btn2:hover{background:#e2e6ff}
+.btn3{background:transparent;color:var(--mut);border:1px solid var(--line)}
+.btnrow{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+.pill{display:inline-block;font-size:11.5px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;color:var(--acc);background:var(--acc2);border-radius:20px;padding:3px 10px;margin-bottom:8px}
+.bar{height:9px;background:#edeef3;border-radius:6px;overflow:hidden;margin-top:5px}
+.bar i{display:block;height:100%;border-radius:6px;background:var(--acc);transition:width .4s}
+.dstat{display:flex;justify-content:space-between;align-items:baseline;font-size:13.5px;margin-top:12px}
+.dstat b{font-weight:600}.dstat span{color:var(--mut);font-size:12px}
+.q{font-size:17px;font-weight:600;margin:10px 0 16px}
+.opt{display:flex;gap:12px;align-items:flex-start;width:100%;text-align:left;background:var(--bg);border:1.5px solid var(--line);border-radius:12px;padding:13px 15px;margin-bottom:9px;font-weight:500;font-size:14.5px;color:var(--ink);transition:.12s}
+.opt:hover{border-color:var(--acc)}
+.opt .l{flex:none;width:26px;height:26px;border-radius:50%;background:#fff;border:1.5px solid var(--line);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px}
+.opt.sel{border-color:var(--acc);background:var(--acc2)}
+.opt.right{border-color:var(--ok);background:var(--okbg)}.opt.right .l{background:var(--ok);color:#fff;border-color:var(--ok)}
+.opt.wrong{border-color:var(--bad);background:var(--badbg)}.opt.wrong .l{background:var(--bad);color:#fff;border-color:var(--bad)}
+.opt:disabled{cursor:default;opacity:1}
+.expl{border-radius:12px;padding:14px 16px;margin:10px 0;font-size:14px}
+.expl.good{background:var(--okbg);border:1px solid #b7e6d4}.expl.poor{background:var(--badbg);border:1px solid #f5c6c6}
+.meta{display:flex;justify-content:space-between;align-items:center;font-size:12.5px;color:var(--mut);flex-wrap:wrap;gap:8px}
+.timer{font-variant-numeric:tabular-nums;font-weight:700;font-size:15px;color:var(--ink);background:var(--acc2);padding:4px 12px;border-radius:8px}
+.timer.low{color:var(--bad);background:var(--badbg)}
+.mic{display:inline-flex;align-items:center;gap:7px;font-size:12.5px;color:var(--mut);margin-top:10px;min-height:20px}
+.mic .dot{width:9px;height:9px;border-radius:50%;background:#cbd0da}
+.mic.live .dot{background:var(--bad);animation:pulse 1.2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.fc{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:38px 26px;text-align:center;cursor:pointer;min-height:210px;display:flex;flex-direction:column;justify-content:center;gap:10px}
+.fc .f{font-size:18px;font-weight:650}.fc .b{font-size:15.5px;color:var(--ink)}
+.fc .hint{font-size:12px;color:var(--mut)}
+.score{font-size:42px;font-weight:800}
+.score.pass{color:var(--ok)}.score.fail{color:var(--bad)}
+table{width:100%;border-collapse:collapse;font-size:13.5px;margin-top:10px}
+td,th{padding:7px 6px;border-bottom:1px solid var(--line);text-align:left}
+th{color:var(--mut);font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:.4px}
+.trap{background:#fff8e6;border:1px solid #f3dfa3;border-radius:10px;padding:10px 14px;font-size:13.5px;margin-top:12px}
+.learn h3{color:var(--acc);margin-top:18px}
+.learn p{font-size:14px;margin-bottom:8px}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
+.chip{font-size:12.5px;border:1px solid var(--line);background:var(--card);border-radius:20px;padding:6px 13px;cursor:pointer;font-weight:500}
+.chip.on{background:var(--acc);color:#fff;border-color:var(--acc)}
+.ready{font-size:13px;padding:10px 14px;border-radius:10px;margin-top:12px}
+.ready.g{background:var(--okbg)}.ready.y{background:#fff8e6}.ready.r{background:var(--badbg)}
+.crumb{font-size:13px;color:var(--acc);cursor:pointer;font-weight:600;margin-bottom:10px;display:inline-block}
+kbd{background:#eef0f4;border:1px solid var(--line);border-radius:5px;padding:1px 6px;font-size:11.5px;font-family:inherit}
+.small{font-size:12px;color:var(--mut);margin-top:10px}
+</style>
+</head>
+<body>
+<header>
+  <h1 onclick="go('home')">CPM Exam <span>Coach</span></h1>
+  <div class="vtoggles">
+    <div class="tog" id="togOut" onclick="toggleVoice('out')">🔊 Read aloud</div>
+    <div class="tog" id="togIn" onclick="toggleVoice('in')">🎙️ Voice answers</div>
+  </div>
+</header>
+<main id="view"></main>
+<script>
+"use strict";
+const QB=[];
+QB.push(
+{d:1,q:"A product has reached the maturity stage. Sales are flat and margins are declining due to increased competition. Which strategy is MOST appropriate?",c:["Increase production capacity","Launch aggressive discounting to gain volume","Segment the market and focus on profitable niches while reducing costs","Immediately retire the product"],a:2,x:"In maturity, the goal is extending profitability through segmentation, differentiation, and cost management — not mass discounting or immediate retirement."},
+{d:1,q:"In a Stage-Gate process, what is the PRIMARY purpose of a gate?",c:["To add checkpoints that slow development","To make Go/No-Go/Hold/Recycle decisions and control investment","To notify customers of upcoming releases","To transfer ownership from engineering to marketing"],a:1,x:"Gates are investment control and decision checkpoints where cross-functional leadership decides Go, No-Go, Hold, or Recycle."},
+{d:1,q:"Which product lifecycle stage typically involves the HIGHEST marketing spend relative to revenue?",c:["Growth","Maturity","Decline","Introduction"],a:3,x:"Introduction requires heavy marketing investment to build awareness while revenue is still minimal."},
+{d:1,q:"What is the correct order of the four classic Product Lifecycle (PLC) stages?",c:["Introduction, Maturity, Growth, Decline","Introduction, Growth, Maturity, Decline","Growth, Introduction, Maturity, Decline","Conceive, Plan, Develop, Launch"],a:1,x:"The classic PLC runs Introduction → Growth → Maturity → Decline. Conceive/Plan/Develop are ProdBOK phases, not PLC stages."},
+{d:1,q:"What is the correct sequence of ProdBOK lifecycle phases?",c:["Plan, Conceive, Develop, Launch, Qualify, Deliver, Retire","Conceive, Plan, Develop, Qualify, Launch, Deliver, Retire","Conceive, Develop, Plan, Launch, Qualify, Retire, Deliver","Plan, Develop, Test, Launch, Grow, Mature, Decline"],a:1,x:"ProdBOK: Conceive → Plan → Develop → Qualify → Launch → Deliver → Retire, each preceded by a cross-functional gate."},
+{d:1,q:"During which PLC stage do profits typically peak?",c:["Introduction","Growth","Maturity","Decline"],a:2,x:"Profits generally peak in early maturity: sales are at their highest and development costs have been absorbed, before competitive pressure erodes margins."},
+{d:1,q:"A gate review results in a 'Recycle' decision. What does this mean?",c:["The product is retired and materials are recycled","The project returns to the previous phase to rework deliverables before advancing","The project is paused indefinitely","The budget is reallocated to another product"],a:1,x:"Recycle sends the project back to redo or improve phase deliverables; Hold pauses it, No-Go kills it."},
+{d:1,q:"In Stage-Gate, how does resource commitment typically change across successive phases?",c:["It stays constant to keep budgets predictable","It decreases as uncertainty falls","It increases with each successive phase","It is fully committed at the first gate"],a:2,x:"Stage-Gate is an incremental-commitment model: investment grows phase by phase as uncertainty is reduced."},
+{d:1,q:"The primary purpose of screening during the early gates is to:",c:["Finalize the product's pricing","Reduce a large set of ideas to a viable few worth investment","Assign engineers to the project","Create the launch plan"],a:1,x:"Screening evaluates new product ideas against criteria (strategic fit, market attractiveness, feasibility, financial return) to narrow the funnel."},
+{d:1,q:"Which is NOT a typical gate criterion in Stage-Gate?",c:["Strategic alignment","Market attractiveness","Technical feasibility","The development team's vacation schedule"],a:3,x:"Gate criteria are strategic alignment, market attractiveness, technical feasibility, and financial return — not staffing logistics."},
+{d:1,q:"A product in the Growth stage should generally focus on:",c:["Harvesting profits and cutting all investment","Scaling production, expanding distribution, and refining positioning","Retiring weak SKUs and archiving documentation","Running end-of-life notifications"],a:1,x:"Growth demands scaling to meet demand, expanding channels, and sharpening positioning as competitors enter."},
+{d:1,q:"In the Decline stage, 'harvesting' a product means:",c:["Selling the product line to a competitor","Reducing investment while continuing to collect profits from remaining sales","Increasing R&D to revive growth","Bundling it with new products"],a:1,x:"Harvest = minimize spend, maximize remaining cash flow. Divest = sell; reposition = re-invest for a new segment."},
+{d:1,q:"Which BCG Matrix category describes a product with high market share in a low-growth market?",c:["Star","Question Mark","Cash Cow","Dog"],a:2,x:"Cash Cows: high share, low growth — they fund other investments. Stars are high/high; Dogs low/low; Question Marks low share/high growth."},
+{d:1,q:"A product with low market share in a high-growth market is a:",c:["Cash Cow","Dog","Star","Question Mark"],a:3,x:"Question Marks need a decision: invest to grow share, or divest."},
+{d:1,q:"Which portfolio decision is MOST appropriate for a Dog?",c:["Heavy investment to convert it to a Star","Harvest or divest","Increase marketing spend","Use it to fund Question Marks"],a:1,x:"Dogs (low share, low growth) rarely justify investment; harvest or divest is standard. Cash Cows fund other products."},
+{d:1,q:"Which is a valid criterion for retiring a product?",c:["The product just launched last quarter","Declining sales, negative margins, or strategic misalignment","The engineering team wants a new project","A competitor lowered prices once"],a:1,x:"EOL decisions rest on sustained decline, unprofitability, or misfit with strategy — not novelty-seeking or single competitor moves."},
+{d:1,q:"Which activity belongs in a proper End-of-Life (EOL) process?",c:["Customer notification and support wind-down","Hiding the retirement from existing customers","Immediately deleting all product documentation","Doubling the price to force churn"],a:0,x:"A responsible EOL includes notifying customers, winding down support in stages, and archiving documentation."},
+{d:1,q:"True or False: In the ProdBOK framework, each lifecycle phase is preceded by a cross-functional gate.",c:["True","False"],a:0,x:"True — every phase transition is governed by a gate with Go/No-Go/Hold/Recycle outcomes."},
+{d:1,q:"During Introduction, which pricing approach is used to quickly build market share?",c:["Skimming","Penetration","Cost-plus","Prestige"],a:1,x:"Penetration pricing sets a low initial price to gain share fast; skimming starts high and drops over time."},
+{d:1,q:"Skimming pricing is MOST appropriate when:",c:["The product is undifferentiated and competition is fierce","Early adopters will pay a premium for an innovative product","The company needs maximum unit volume immediately","The product is in decline"],a:1,x:"Skimming captures value from price-insensitive early adopters of innovative products (e.g., consumer electronics), then lowers price over time."},
+{d:1,q:"Competition typically begins entering the market in force during which PLC stage?",c:["Introduction","Growth","Maturity","Decline"],a:1,x:"Rapid sales growth attracts competitors during the Growth stage; by Maturity the market is crowded."},
+{d:1,q:"A PM notices a mature product's sales dipping as customers shift to the company's own newer product. This is called:",c:["Market saturation","Cannibalization","Diversification","Substitution threat"],a:1,x:"Cannibalization is when a company's new product takes sales from its own existing products — sometimes acceptable if planned."},
+{d:1,q:"In the Qualify phase of ProdBOK, the team primarily:",c:["Generates new product ideas","Tests and validates the product before launch","Retires legacy versions","Negotiates supplier contracts"],a:1,x:"Qualify is the testing/validation phase (alpha, beta, QA) confirming the product is ready for Launch."},
+{d:1,q:"The Deliver phase of ProdBOK covers:",c:["Initial concept scoring","Ongoing operation, support, and optimization of the product in market","Writing the business case","Prototype development"],a:1,x:"Deliver is the post-launch, in-market phase: managing, supporting, and optimizing the live product."},
+{d:1,q:"Which stage's PM actions include awareness campaigns, distribution setup, and pricing strategy?",c:["Introduction","Growth","Maturity","Decline"],a:0,x:"These are launch-adjacent actions of Introduction, when awareness and availability must be established."},
+{d:1,q:"Which stage's PM actions center on product enhancements, cost reduction, and market segmentation?",c:["Introduction","Growth","Maturity","Decline"],a:2,x:"Maturity focuses on defending share: enhancements, efficiency, and finding profitable segments."},
+{d:1,q:"At a gate meeting, the sponsoring executive says market conditions have shifted and asks the team to pause until next quarter without killing the project. The correct gate decision is:",c:["Go","No-Go","Hold","Recycle"],a:2,x:"Hold pauses the project without terminating it; Recycle would require rework, No-Go kills it."},
+{d:1,q:"Portfolio management is BEST described as:",c:["Managing a single product's roadmap","Managing a collection of products across their lifecycles to balance risk and return","Managing the sales pipeline","Tracking competitor products"],a:1,x:"Portfolio management balances investment across products at different lifecycle stages (invest, maintain, harvest, divest)."},
+{d:1,q:"Which sequence describes the diffusion of innovation adopter categories?",c:["Early adopters, innovators, early majority, laggards, late majority","Innovators, early adopters, early majority, late majority, laggards","Innovators, early majority, early adopters, late majority, laggards","Early majority, innovators, early adopters, laggards, late majority"],a:1,x:"Rogers' curve: Innovators → Early Adopters → Early Majority → Late Majority → Laggards."},
+{d:1,q:"The 'chasm' in technology adoption refers to the gap between:",c:["Innovators and early adopters","Early adopters and the early majority","Early majority and late majority","Late majority and laggards"],a:1,x:"Moore's chasm sits between visionary early adopters and pragmatic early majority buyers, who need proof and whole-product solutions."},
+{d:1,q:"True or False: A product can be in the Decline stage of the market lifecycle while still being profitable.",c:["True","False"],a:0,x:"True — declining products with low investment needs can remain profitable, which is exactly the logic of harvesting."},
+{d:1,q:"Which document primarily guides the cross-functional activities required to bring a product to market at Launch?",c:["The launch plan (go-to-market plan)","The org chart","The sprint backlog","The support runbook"],a:0,x:"The launch/GTM plan coordinates marketing, sales enablement, channels, pricing, and support readiness for launch."},
+{d:1,q:"A gate reviewer asks, 'Does this product still fit our corporate strategy?' Which gate criterion is being applied?",c:["Technical feasibility","Financial return","Strategic alignment","Market attractiveness"],a:2,x:"Strategic alignment tests fit with company strategy; the other criteria test different dimensions."},
+{d:1,q:"Sales are rising rapidly, per-unit costs are falling, and new competitors appear monthly. Which stage is this product in?",c:["Introduction","Growth","Maturity","Decline"],a:1,x:"Rapid sales growth, improving economics, and competitor entry are the signature of Growth."},
+{d:1,q:"When a mature product faces commoditization, the MOST common defensive play is:",c:["Exit the market immediately","Differentiate through features, service, or brand while managing costs","Raise prices across the board","Stop all marketing"],a:1,x:"Maturity strategy = differentiation plus cost management to defend share and margin."},
+{d:1,q:"Which lifecycle concept explains why a company should maintain products in multiple lifecycle stages simultaneously?",c:["Cannibalization","Portfolio balance","Skimming","Whole product"],a:1,x:"A balanced portfolio ensures Cash Cows fund Stars and Question Marks, sustaining revenue as products age."},
+{d:1,q:"The MOST appropriate time to begin planning a product's retirement strategy is:",c:["Only after sales go negative","During lifecycle planning, well before decline","Never — retirement is handled by finance","At the first customer complaint"],a:1,x:"EOL should be anticipated in lifecycle planning so migration paths, support commitments, and notifications are orderly."},
+{d:1,q:"A 'Go' decision at a gate means:",c:["The project may proceed to the next phase with committed resources","The project is complete","The product launches immediately regardless of phase","Marketing takes over the project"],a:0,x:"Go advances the project into the next phase and commits the resources planned for that phase."},
+{d:1,q:"In the Introduction stage, which of the following is typically TRUE?",c:["Profits are high and costs are low","Sales are low and per-customer acquisition cost is high","Competition is at its peak","Distribution is fully built out"],a:1,x:"Introduction features low sales, high costs, limited distribution, and few (if any) competitors."},
+{d:1,q:"Which action pairs correctly with the Decline stage?",c:["Building awareness","Scaling production","Deciding to harvest, divest, reposition, or retire","Entering new geographic markets aggressively"],a:2,x:"Decline forces the strategic choice among harvest, divest, reposition, or retire."}
+);
+QB.push(
+{d:1,q:"Inbound product management is BEST described as:",c:["Distributing messages, training salespeople, and running PR","Absorbing market information — customer research, competitive intelligence, trends — and setting product strategy and requirements","Managing inbound customer support tickets","Negotiating with suppliers"],a:1,x:"Inbound PM is the 'radar' of the organization: research, competitive intelligence, requirements, strategy. Outbound pushes messages out (GTM, sales training, PR, advertising)."},
+{d:1,q:"Which activity is an OUTBOUND product management function?",c:["Documenting market requirements","Analyzing competitive intelligence","Training the sales force and communicating through advertising and PR","Setting product strategy"],a:2,x:"Outbound = pushing messages to market: sales enablement, GTM, advertising, PR, events. The others are inbound."},
+{d:1,q:"In many organizations, the Product Manager is responsible for the product primarily from:",c:["Launch to Retire only","Conceive to Launch, with focus on internal value creation and cost/profit monitoring","Qualify to Deliver only","Marketing campaigns only"],a:1,x:"AIPMM frames PdM as driving Conceive-to-Launch and internal value creation, while PmM focuses on outbound, customer-facing value communication."},
+{d:1,q:"A company decides to withdraw a product from its portfolio. Which PLC concept does this correspond to?",c:["Commercialization","Product withdrawal / retirement following Decline","Market development","Qualification"],a:1,x:"Withdrawal (retirement) is the formal removal of a product from the market at the end of Decline."},
+{d:1,q:"Commercialization refers to:",c:["The process of taking a product from development into the market to generate sales","Reducing product cost through Six Sigma","Licensing intellectual property","Writing the PRD"],a:0,x:"Commercialization is bringing the product to market — launch plans, production ramp, channel readiness, marketing rollout."},
+{d:1,q:"Which methodology focuses on reducing process variation and defects using data (DMAIC)?",c:["Lean","Six Sigma","Scrum","Stage-Gate"],a:1,x:"Six Sigma reduces defects/variation via DMAIC (Define, Measure, Analyze, Improve, Control). Lean focuses on eliminating waste."},
+{d:1,q:"Lean methodology primarily aims to:",c:["Add approval gates","Eliminate waste and maximize customer value in processes","Increase inventory buffers","Lengthen development cycles"],a:1,x:"Lean = maximize value, minimize waste (overproduction, waiting, defects, excess inventory, etc.)."},
+{d:1,q:"The 'core product' level of a product refers to:",c:["The physical item and its packaging","The fundamental benefit or problem-solving value the customer is really buying","Warranty and after-sales service","The brand name"],a:1,x:"Three levels: core (the underlying benefit), actual (physical good/features/brand/packaging), augmented (services, warranty, support)."},
+{d:1,q:"Free installation, warranty, and after-sales support belong to which product level?",c:["Core product","Actual product","Augmented product","Generic product"],a:2,x:"The augmented product adds services and benefits around the actual product."},
+{d:1,q:"A 'product line' is:",c:["All products a company sells","A group of closely related products sold by a company (similar function, customers, or channels)","One SKU with multiple prices","The supply chain for one product"],a:1,x:"Product line = related products. Product mix = the complete set of all lines a company offers."},
+{d:1,q:"The number of different product lines a company carries is called product mix:",c:["Depth","Width (breadth)","Length","Consistency"],a:1,x:"Width = number of lines; depth = variants within a line; length = total items; consistency = how related lines are."},
+{d:1,q:"Adding new variants (sizes, flavors, models) within an existing product line is called:",c:["Line extension","Diversification","Market development","Divestment"],a:0,x:"Line extension deepens an existing line; brand extension takes a brand into a new category."},
+{d:1,q:"A PM evaluating whether to license a technology, build in-house, or acquire a company is performing:",c:["A build/buy/partner (sourcing) analysis","A retrospective","Persona development","Win/loss analysis"],a:0,x:"Build vs. buy vs. partner/license is a core PLM sourcing decision the CPM exam expects PMs to assess, including M&A and licensing opportunities."},
+{d:1,q:"Which is the BEST reason to reposition rather than retire a declining product?",c:["The team is emotionally attached to it","A viable new segment or use case exists where the product can be competitive","Retirement paperwork is tedious","Competitors still sell similar products"],a:1,x:"Repositioning makes sense only when a real, addressable opportunity exists for the product in a new segment or use."},
+{d:1,q:"The 'whole product' concept states that mainstream customers buy:",c:["Only the core technology","The complete solution — product plus services, integrations, and support — needed to fully solve their problem","The cheapest available option","Whatever early adopters buy"],a:1,x:"Mainstream (pragmatist) buyers require the whole product: everything necessary to achieve the buying objective."},
+{d:1,q:"Which financial signal MOST strongly suggests a product has entered Decline?",c:["Rising CAC in a growing market","Sustained falling sales and shrinking margins despite maintenance efforts","One bad quarter after a supply issue","High marketing spend at launch"],a:1,x:"Decline is a sustained structural fall in sales/margins, not a one-off dip."},
+{d:1,q:"At which ProdBOK phase is the business case FIRST formally developed and approved?",c:["Develop","Plan","Deliver","Retire"],a:1,x:"Conceive generates/screens ideas; Plan builds the business case, market analysis, and product definition for gate approval before Develop."},
+{d:1,q:"Beta testing with real customers in their own environment happens primarily in which phase?",c:["Conceive","Plan","Qualify","Retire"],a:2,x:"Qualify covers validation: alpha (internal), beta (external customers), and readiness verification before Launch."},
+{d:1,q:"Which launch readiness item is MOST likely to delay a launch gate approval if missing?",c:["A finished sales enablement and support readiness plan","The next product's concept document","A retrospective from a prior sprint","An updated org chart"],a:0,x:"Launch gates verify market/channel/support readiness; missing GTM or support readiness blocks launch."},
+{d:1,q:"A cash cow product should generally be:",c:["Divested immediately","Managed for efficiency with minimal investment, using its profits to fund growth products","Given the largest R&D budget","Repositioned into a high-growth market"],a:1,x:"Cash cows are milked: sustain share cheaply and redirect cash to Stars/Question Marks."},
+{d:1,q:"True or False: The PLC applies only to physical goods, not services.",c:["True","False"],a:1,x:"False — lifecycle concepts apply to any offering: goods, services, or hybrid solutions, in any industry."},
+{d:1,q:"Sales have begun to slow after years of rapid growth and price competition is intensifying. The product is MOST likely transitioning from:",c:["Introduction to Growth","Growth to Maturity","Maturity to Decline","Decline to Withdrawal"],a:1,x:"Slowing growth plus intensifying price competition marks the Growth→Maturity transition."},
+{d:1,q:"Which is the PM's PRIMARY lens during the Deliver phase?",c:["Idea screening","Monitoring performance vs. plan (revenue, adoption, support metrics) and optimizing the in-market product","Recruiting the dev team","Designing the logo"],a:1,x:"Deliver is about running and optimizing the launched product against business goals."},
+{d:1,q:"An effective product retirement plan should include all EXCEPT:",c:["Migration path for existing customers","Final-order and end-of-support dates","Silent discontinuation with no customer notice","Internal communication and inventory rundown"],a:2,x:"Silent discontinuation damages trust; EOL plans communicate dates, migration, and support wind-down clearly."},
+{d:1,q:"Which best describes 'gate deliverables'?",c:["Marketing gifts for customers","The defined outputs of a phase that reviewers evaluate at the gate","Software builds only","Documents produced after launch only"],a:1,x:"Each phase has prescribed deliverables (business case, test results, launch plan, etc.) reviewed at its gate."},
+{d:1,q:"Why do many product launches fail even with good products?",c:["Launch timing, channel readiness, and market communication were inadequate","The gate process was followed too carefully","Too much market research was done","Prices were set using value-based methods"],a:0,x:"Execution at launch — timing, channels, positioning, readiness — is a leading cause of failure independent of product quality."},
+{d:1,q:"In portfolio reviews, products are commonly evaluated on which two BCG dimensions?",c:["Price and cost","Relative market share and market growth rate","Brand awareness and NPS","Team size and budget"],a:1,x:"BCG plots relative market share vs. market growth to categorize Stars, Cash Cows, Question Marks, Dogs."},
+{d:1,q:"A PM is asked to extend a mature product's life. Which set of levers is MOST appropriate?",c:["New uses, new users/segments, more frequent usage, product enhancements","Immediate retirement and archive","Removing all promotion","Raising price 300%"],a:0,x:"Classic maturity-extension levers: find new uses, new users, increase usage frequency, refresh the product."},
+{d:1,q:"The MAIN purpose of a launch (GTM) plan is to:",c:["Document engineering architecture","Coordinate positioning, pricing, channels, promotion, sales and support readiness for market entry","Replace the business case","Track sprint velocity"],a:1,x:"GTM plans align all commercial functions for successful market entry."},
+{d:1,q:"Which statement about gates is TRUE?",c:["Gates are optional suggestions with no authority","Gate decisions are made by a cross-functional group of decision-makers who control resources","Only engineering attends gates","Gates occur only once, at launch"],a:1,x:"Gatekeepers are cross-functional leaders empowered to commit or withhold resources at each phase transition."},
+{d:1,q:"A product generates steady revenue but the market is shrinking 10% annually. Leadership wants maximum cash extraction. The right strategy is:",c:["Invest heavily in R&D","Harvest: cut costs and investment while maintaining sales as long as profitable","Reposition into an adjacent booming market at high cost","Acquire a competitor"],a:1,x:"Harvest maximizes near-term cash from a declining position with minimal investment."},
+{d:1,q:"Which ProdBOK phase pairs correctly with its focus?",c:["Conceive — beta testing","Plan — business case and product definition","Qualify — idea generation","Retire — launch marketing"],a:1,x:"Plan produces the business case/definition; Conceive ideates, Qualify validates, Retire ends life."},
+{d:1,q:"Which is the BEST example of planned cannibalization?",c:["A competitor stealing your customers","Launching a next-generation product knowing it will replace your current flagship before competitors do it for you","Two sales reps competing for one account","Discounting last year's stock"],a:1,x:"Deliberately obsoleting your own product ('eat your own lunch before someone else does') is strategic cannibalization."},
+{d:1,q:"When demand outstrips supply during Growth, the PM's FIRST priority should be:",c:["Raising prices to punish loyal customers","Scaling production/operations and distribution to capture share before competitors","Cutting the marketing budget to zero","Starting the retirement plan"],a:1,x:"Growth rewards whoever captures share; scaling capacity and channels is the priority."},
+{d:1,q:"Which role primarily monitors product profitability and internal cost control across the lifecycle?",c:["Product Manager","Scrum Master","QA Manager","PR Manager"],a:0,x:"AIPMM assigns the PdM responsibility for internal value creation — costs, margins, and profit performance."},
+{d:1,q:"A 'Hold' gate decision differs from 'No-Go' because Hold:",c:["Terminates the project permanently","Pauses the project (e.g., resources or timing) with intent to revisit, without killing it","Approves the project unconditionally","Requires rework of deliverables"],a:1,x:"Hold = pause and revisit; No-Go = terminate; Recycle = rework and re-present."},
+{d:1,q:"Which pair matches the PLC stage to its typical cash flow profile?",c:["Introduction — strongly positive","Growth — improving but investment-hungry","Maturity — negative","Decline — maximum investment"],a:1,x:"Growth has rising revenue but heavy reinvestment; Introduction is negative; Maturity is the cash peak; Decline should minimize investment."},
+{d:1,q:"The exam asks how a PM should treat a product with negative contribution margin and no strategic value. Best answer:",c:["Keep it for sentimental reasons","Begin an orderly end-of-life process","Double marketing spend","Rebrand it without changing economics"],a:1,x:"Negative unit economics with no strategic role is the textbook retirement trigger."},
+{d:1,q:"True or False: Stage-Gate prescribes concurrent (parallel) cross-functional activities within each stage, not purely sequential work.",c:["True","False"],a:0,x:"True — within stages, activities run in parallel across functions; gates are the sequential control points."},
+{d:1,q:"Which document authorizes moving from Plan to Develop in a gated process?",c:["Approved business case at the gate","Press release","Support runbook","Sprint retrospective notes"],a:0,x:"The approved business case (with product definition) is the classic Plan-gate deliverable that unlocks Develop funding."}
+);
+QB.push(
+{d:1,q:"A software product launched 6 months ago has low awareness and slow adoption despite good reviews. The MOST appropriate action is:",c:["Retire the product","Increase awareness-building marketing and evaluate channel effectiveness","Cut the price to zero permanently","Skip to maturity-stage tactics"],a:1,x:"Introduction-stage problems are usually awareness/distribution problems; fix marketing and channels before drastic moves."},
+{d:1,q:"Which is a key difference between the PLC (market view) and ProdBOK lifecycle (process view)?",c:["They are identical","PLC describes market sales stages; ProdBOK describes the organization's phases for managing the product from idea to retirement","ProdBOK only covers marketing","PLC only applies to Agile teams"],a:1,x:"PLC = market behavior (Intro/Growth/Maturity/Decline); ProdBOK = internal management process (Conceive→Retire)."},
+{d:1,q:"The PRIMARY output of the Conceive phase is:",c:["A validated production product","Screened, prioritized product concepts/ideas worth planning","A launch plan","A support wind-down schedule"],a:1,x:"Conceive generates and screens ideas, producing concepts that justify Plan-phase investment."},
+{d:1,q:"Which situation calls for a 'Recycle' rather than 'No-Go'?",c:["The market opportunity has permanently disappeared","Deliverables are promising but incomplete or need rework before a sound decision can be made","The company is exiting the business line","The project violates regulation with no remedy"],a:1,x:"Recycle = promising but needs rework; No-Go = fundamentally not viable."},
+{d:1,q:"In lifecycle terms, 'time to market' matters MOST in which situation?",c:["Markets with fast-moving competition and first-mover advantages","Declining markets","Products already retired","Internal tooling with no competition"],a:0,x:"Speed matters most when windows are short and early share capture compounds (Growth-stage dynamics)."},
+{d:1,q:"Which metric set would BEST monitor a product in the Deliver phase?",c:["Idea count and concept scores","Revenue vs. plan, adoption, retention/churn, support volume, margin","Prototype defect counts only","Gate meeting attendance"],a:1,x:"Post-launch monitoring tracks commercial and customer health metrics against the business case."},
+{d:1,q:"A PM inherits a portfolio: one Star, two Cash Cows, three Dogs. The strategic priority should be:",c:["Fund the Star with Cash Cow profits and evaluate the Dogs for divestment/harvest","Fund all products equally","Kill the Star to protect the Dogs","Sell the Cash Cows first"],a:0,x:"Portfolio logic: milk Cows, feed Stars, fix or exit Dogs."},
+{d:1,q:"'Crossing the chasm' requires focusing on:",c:["All segments simultaneously","A specific beachhead niche of pragmatic buyers with a whole-product solution","Only innovators","Cutting product features"],a:1,x:"Moore prescribes dominating a beachhead niche with a complete solution to win the early majority."},
+{d:1,q:"Which is TRUE about the relationship between the PLC stage and promotional emphasis?",c:["Introduction emphasizes brand preference; Maturity emphasizes awareness","Introduction builds awareness/trial; Maturity emphasizes differentiation and brand preference","Promotion is identical at all stages","Decline requires maximum promotion"],a:1,x:"Promotion shifts: awareness/trial (Intro) → preference vs. rivals (Growth/Maturity) → minimal (Decline)."},
+{d:1,q:"A gate committee approves Develop funding but requires a revised financial model in 60 days. This is an example of:",c:["An unconditional Go","A conditional Go decision","A No-Go","Skipping the gate"],a:1,x:"Conditional Go advances the project with specified conditions to be met."},
+{d:1,q:"The MAIN reason companies formalize a product lifecycle process is to:",c:["Create paperwork","Improve decision quality and resource allocation across the funnel, reducing failure rates","Slow down engineering","Satisfy auditors only"],a:1,x:"Formal lifecycle processes exist to invest in the right products and kill weak ones early."},
+{d:1,q:"Support costs on an aging product now exceed its gross profit. Customers have a viable migration path. The PM should recommend:",c:["Indefinite support","End-of-life with customer migration plan and support sunset dates","Hiring more support staff","A price freeze"],a:1,x:"When economics are negative and migration exists, orderly EOL is the right recommendation."},
+{d:1,q:"During which stage is distribution expansion MOST aggressive?",c:["Introduction","Growth","Decline","Withdrawal"],a:1,x:"Growth is when channels are scaled aggressively to meet expanding demand."},
+{d:1,q:"Which lifecycle-related analysis helps decide WHERE to invest across multiple products?",c:["Portfolio analysis (e.g., BCG/GE-McKinsey)","Single-product burndown chart","Sprint retrospective","Unit test coverage"],a:0,x:"Portfolio frameworks compare products to allocate investment rationally."},
+{d:1,q:"The GE-McKinsey nine-box matrix evaluates products on:",c:["Market attractiveness and business/competitive strength","Price and promotion","Velocity and quality","NPS and CAC"],a:0,x:"GE-McKinsey generalizes BCG using market attractiveness vs. competitive strength on 3×3 boxes."},
+{d:1,q:"Which is a leading indicator that a product is approaching Maturity?",c:["No customers yet","Slowing new-customer growth rate while total sales remain high","Zero competition","Rapidly falling awareness"],a:1,x:"Deceleration of growth while volume stays high signals the top of the curve."},
+{d:1,q:"An 'evergreen' subscription product blurs classic PLC stages. What remains true?",c:["Lifecycle thinking no longer applies","Individual features/versions still follow lifecycle stages and require gate-like investment decisions","No retirement decisions are ever needed","Churn is irrelevant"],a:1,x:"Even continuous products manage versions, features, and cohorts through lifecycle-style investment and retirement decisions."},
+{d:1,q:"What is the PRIMARY financial purpose of gates as investment checkpoints?",c:["To maximize total spending","To limit exposure by releasing funds incrementally as uncertainty decreases","To guarantee every project launches","To transfer budget to sales"],a:1,x:"Incremental funding caps downside risk on ideas that later prove weak."},
+{d:1,q:"Which stakeholder group MUST be included in a launch-gate readiness review?",c:["Only engineering","Cross-functional: marketing, sales, support, operations, finance","Only the CEO","External press"],a:1,x:"Launch readiness spans all commercial functions, so the gate review is cross-functional."},
+{d:1,q:"Your new product will make an existing partner's add-on obsolete. Lifecycle-wise, the BEST practice is:",c:["Surprise the partner at launch","Manage ecosystem/channel impacts as part of launch and EOL planning, communicating early","Cancel the product","Let legal handle it after launch"],a:1,x:"Ecosystem and channel impact management is part of responsible lifecycle/launch planning."},
+{d:1,q:"Which of the following BEST defines product lifecycle management (PLM) as tested by AIPMM?",c:["A CAD/PDM software category only","Managing a product from conception through retirement with effective, real-world decisions at each phase","Managing only the marketing calendar","Sprint-level task management"],a:1,x:"AIPMM tests PLM as end-to-end decision-making from Conceive to Retire — not the software category."},
+{d:1,q:"When should pricing strategy FIRST be considered in the lifecycle?",c:["After launch only","During early planning/business case, since price drives the financial model","Only at maturity","Never — finance owns pricing"],a:1,x:"Price assumptions underpin the business case; pricing is planned early and revisited each stage."},
+{d:1,q:"A product in Growth is suffering stockouts while a competitor scales smoothly. The PM's failure was MOST likely in:",c:["Demand forecasting and operations/supply planning","Logo design","Retrospective facilitation","EOL notification"],a:0,x:"Growth-stage execution depends on accurate forecasting and supply/capacity scaling."},
+{d:1,q:"Which is TRUE of decline-stage pricing?",c:["Prices always rise","Pricing often becomes tactical — maintaining margin from loyal users or clearing inventory","Value-based pricing is illegal in decline","Price has no role in decline"],a:1,x:"Decline pricing serves harvest goals: margin capture from remaining demand or clearance."},
+{d:1,q:"The FIRST formal check that an idea aligns with company strategy happens at:",c:["The initial screening gate after Conceive","Launch","Post-launch review","Retirement"],a:0,x:"Early gates screen for strategic fit before meaningful investment."},
+{d:1,q:"Which practice reduces the risk of 'zombie products' (neither growing nor retired)?",c:["Regular portfolio reviews with explicit invest/maintain/harvest/divest decisions","Avoiding all metrics","Permanent budget entitlements per product","Never discussing retirement"],a:0,x:"Scheduled portfolio reviews force explicit lifecycle decisions, preventing drift."},
+{d:1,q:"True or False: A successful gate process guarantees product success in the market.",c:["True","False"],a:1,x:"False — gates improve decision quality and reduce risk, but market outcomes are never guaranteed."},
+{d:1,q:"What distinguishes 'Deliver' from 'Launch' in ProdBOK?",c:["Nothing — same phase","Launch is the market-entry event/phase; Deliver is the ongoing in-market management afterward","Deliver precedes Launch","Deliver refers to shipping code to QA"],a:1,x:"Launch = entering the market; Deliver = operating, supporting, optimizing the live product."},
+{d:1,q:"A key input to the retirement (Retire) gate decision is:",c:["Installed base size, contractual support obligations, and migration options","The color of the next product's packaging","Sprint velocity","Office seating plans"],a:0,x:"Retirement decisions weigh customer/installed-base impact, obligations, and migration feasibility along with economics."},
+{d:1,q:"Which sequencing is correct for a typical new product?",c:["Business case → idea screening → launch → development","Idea generation/screening → business case → development → qualification/testing → launch → in-market management → retirement","Launch → development → business case","Testing → idea generation → retirement → launch"],a:1,x:"The canonical funnel runs ideation through retirement in that order."},
+{d:1,q:"What role does the product roadmap play in lifecycle management?",c:["It replaces gates","It communicates the planned evolution of the product across lifecycle stages to stakeholders","It is only for investors","It tracks daily tasks"],a:1,x:"Roadmaps are the strategic communication layer over lifecycle plans."},
+{d:1,q:"Sales asks why an old product can't just 'stay available forever with no investment.' The PM's BEST lifecycle argument references:",c:["Rising support/maintenance costs, security/compliance risk, and opportunity cost of resources","Personal preference","The age of the codebase alone","Marketing fatigue"],a:0,x:"EOL economics: carrying costs, risk exposure, and opportunity cost justify retirement even if some revenue remains."},
+{d:1,q:"Which BEST describes 'stage overlap' risk when teams skip gates to move faster?",c:["No risk exists","Higher rework and wasted investment if later information invalidates earlier assumptions","Guaranteed faster profit","Better compliance"],a:1,x:"Skipping decision checkpoints increases exposure to building on unvalidated assumptions."},
+{d:1,q:"The 'installed base' refers to:",c:["Factory equipment","The existing set of customers/units actively using the product","Retired SKUs","Competitor customers"],a:1,x:"Installed base = active users/units in the field — central to EOL and upgrade planning."},
+{d:1,q:"For a regulated medical device, which lifecycle characteristic is MOST pronounced?",c:["No documentation needed","Heavier qualification/verification phases and formal gate documentation","No retirement process","Weekly full launches"],a:1,x:"Regulated products amplify Qualify-phase rigor and gate documentation requirements."},
+{d:1,q:"Which statement about lifecycle marketing spend is MOST accurate?",c:["Spend as % of revenue is typically highest at Introduction and declines toward Decline","Spend is flat across stages","Decline requires the most spend","Growth requires zero spend"],a:0,x:"Relative marketing intensity is front-loaded to build awareness, then tapers as the product matures and declines."},
+{d:1,q:"A conditional launch approval requires monitoring 90-day KPIs. Which post-launch artifact does this create?",c:["A post-launch review against business-case projections","A new MRD","An org redesign","A patent filing"],a:0,x:"Post-launch reviews compare actuals to the business case and inform corrective action."},
+{d:1,q:"Which is the BEST example of a lifecycle-driven packaging/pricing move at maturity?",c:["Introducing good/better/best tiers to segment willingness to pay","Removing all price options","Selling only to innovators","Withdrawing from all channels"],a:0,x:"Tiering at maturity extracts more value from segments and defends against low-cost rivals."},
+{d:1,q:"The PRIMARY audience for gate review presentations is:",c:["End customers","Executive gatekeepers who control resources","The press","New hires"],a:1,x:"Gate presentations exist to inform resource-controlling decision-makers."}
+);
+QB.push(
+{d:2,q:"Surveys, focus groups, and customer interviews are examples of:",c:["Secondary research","Primary research","Tertiary research","Predictive analytics"],a:1,x:"Primary research collects new data directly from the market; secondary uses existing published sources."},
+{d:2,q:"Industry analyst reports and government census data are examples of:",c:["Primary research","Secondary research","Qualitative interviews","Ethnography"],a:1,x:"Secondary research analyzes data someone else already gathered."},
+{d:2,q:"Which research approach is BEST for discovering unmet needs you don't yet know exist?",c:["Large-scale quantitative survey","Qualitative methods like ethnography and open-ended interviews","A/B pricing test","Syndicated market-share data"],a:1,x:"Qualitative research explores and discovers; quantitative validates and measures known hypotheses."},
+{d:2,q:"A PM wants to validate, with statistical confidence, which of three features customers prefer. Best method:",c:["A quantitative survey (e.g., conjoint or ranked preference) with an adequate sample","Three coffee chats","One focus group","Reading competitor blogs"],a:0,x:"Validation and measurement across a population require quantitative methods with sufficient sample size."},
+{d:2,q:"Voice of the Customer (VoC) is:",c:["A call-center technology","A structured process for capturing customer needs, expectations, and preferences","A pricing formula","An agile ceremony"],a:1,x:"VoC systematically gathers and prioritizes customer needs to drive requirements."},
+{d:2,q:"Quality Function Deployment (QFD) / House of Quality is used to:",c:["Translate customer requirements into technical/product characteristics","Calculate NPV","Structure a sales territory","Run a retrospective"],a:0,x:"QFD maps customer needs (whats) to engineering characteristics (hows) with priorities."},
+{d:2,q:"The Jobs-to-be-Done framework focuses on:",c:["Customer job titles","The outcome or progress a customer is trying to achieve when they 'hire' a product","Employee task lists","Competitor org charts"],a:1,x:"JTBD centers on the outcome customers hire products to accomplish, independent of demographics."},
+{d:2,q:"A persona is:",c:["A legally binding customer contract","A research-based archetype representing a target user segment's goals, behaviors, and pain points","A random customer's name","A brand mascot"],a:1,x:"Personas synthesize research into representative user archetypes to guide design and messaging."},
+{d:2,q:"Segmenting a market by lifestyle, values, and personality is which type of segmentation?",c:["Geographic","Demographic","Psychographic","Behavioral"],a:2,x:"Psychographic = attitudes, values, lifestyle. Demographic = age/income; behavioral = usage/loyalty."},
+{d:2,q:"Segmenting by usage rate, loyalty status, and purchase occasion is:",c:["Behavioral segmentation","Geographic segmentation","Demographic segmentation","Firmographic segmentation"],a:0,x:"Behavioral segmentation divides customers by how they act toward the product."},
+{d:2,q:"In B2B, segmenting by industry, company size, and buying process is often called:",c:["Psychographics","Firmographics","Ethnographics","Geodemographics"],a:1,x:"Firmographics are the B2B analog of demographics."},
+{d:2,q:"For a segment to be worth targeting, it should be all of the following EXCEPT:",c:["Measurable","Accessible (reachable)","Substantial (large/profitable enough)","Identical to every other segment"],a:3,x:"Good segments are measurable, accessible, substantial, differentiable, and actionable — distinct from other segments, not identical."},
+{d:2,q:"Which component does NOT belong in a standard business case?",c:["Problem/opportunity statement","Financial analysis (NPV, ROI, payback)","Risk assessment","Daily standup notes"],a:3,x:"Business cases include executive summary, problem, market/competitive analysis, solution, financials, risks, recommendation — not ceremony notes."},
+{d:2,q:"The PRIMARY purpose of a business case is to:",c:["Justify investment and support a go/no-go decision with evidence","Replace the roadmap","Document code architecture","Set sales quotas"],a:0,x:"A business case supports planning and investment decision-making with market and financial justification."},
+{d:2,q:"A project requires $1M investment and returns discounted future cash flows of $1.4M. NPV is:",c:["-$400K","$400K","$1.4M","$2.4M"],a:1,x:"NPV = PV of cash flows − initial investment = 1.4M − 1.0M = +$400K → value-creating, proceed."},
+{d:2,q:"A project costs $200K and yields net profit of $50K. ROI is:",c:["4%","25%","250%","50%"],a:1,x:"ROI = net profit / investment = 50/200 = 25%."},
+{d:2,q:"IRR is defined as:",c:["The discount rate at which NPV equals zero","Total revenue divided by cost","The payback period in years","Gross margin percentage"],a:0,x:"IRR is the discount rate making NPV = 0; projects with IRR above the hurdle rate are attractive."},
+{d:2,q:"A product requires $600K upfront and generates $200K net cash per year. The payback period is:",c:["1 year","2 years","3 years","6 years"],a:2,x:"Payback = investment / annual cash = 600/200 = 3 years."},
+{d:2,q:"Fixed costs are $500K, price is $100/unit, variable cost is $50/unit. Break-even volume is:",c:["5,000 units","10,000 units","2,500 units","50,000 units"],a:1,x:"Break-even = fixed / (price − variable) = 500,000/50 = 10,000 units."},
+{d:2,q:"Which pricing strategy sets price based on what the offering is worth to the customer?",c:["Cost-plus","Value-based","Penetration","Competitive parity"],a:1,x:"Value-based pricing anchors on perceived customer value — preferred for differentiated products."},
+{d:2,q:"Cost-plus pricing's main weakness is that it:",c:["Is illegal","Ignores customer willingness to pay and competitive context","Requires knowing customer value","Only works for services"],a:1,x:"Cost-plus guarantees margin math but disconnects price from value and market conditions."},
+{d:2,q:"A SaaS company offers a free basic tier and paid premium tiers. This model is:",c:["Skimming","Freemium","Cost-plus","Predatory pricing"],a:1,x:"Freemium = free base product with paid upgrades, common in SaaS."},
+{d:2,q:"The 4 Ps of the marketing mix are:",c:["Product, Price, Place, Promotion","People, Process, Physical evidence, Product","Plan, Produce, Promote, Profit","Position, Price, Persona, Pipeline"],a:0,x:"Kotler's 4 Ps: Product, Price, Place (distribution), Promotion."},
+{d:2,q:"The extended services marketing mix (7 Ps) adds which three elements?",c:["People, Process, Physical evidence","Profit, Planning, Performance","Positioning, Packaging, PR","Partners, Platforms, Pricing"],a:0,x:"Services add People, Process, and Physical Evidence to the classic 4 Ps."},
+{d:2,q:"In the 4 Cs (customer-oriented mix), 'Place' is reframed as:",c:["Cost","Convenience","Communication","Consumer wants"],a:1,x:"4 Cs: Product→Consumer wants/needs, Price→Cost, Place→Convenience, Promotion→Communication."},
+{d:2,q:"A service cannot be inventoried for later sale. This characteristic is:",c:["Intangibility","Inseparability","Variability","Perishability"],a:3,x:"Perishability: unused service capacity (empty airline seat, idle consultant hour) is lost forever."},
+{d:2,q:"A haircut is produced and consumed at the same time. This is:",c:["Inseparability","Perishability","Intangibility","Homogeneity"],a:0,x:"Inseparability: production and consumption occur simultaneously, often with the customer present."},
+{d:2,q:"Service quality differing between providers and even visits by the same provider illustrates:",c:["Perishability","Variability (heterogeneity)","Intangibility","Tangibility"],a:1,x:"Variability: human-delivered services vary person to person and time to time."},
+{d:2,q:"A customer cannot inspect a consulting engagement before buying it. This is:",c:["Intangibility","Inseparability","Perishability","Divisibility"],a:0,x:"Intangibility: services cannot be seen, touched, or tried before purchase — raising perceived risk."},
+{d:2,q:"Which document captures WHAT the market needs, in the customers' problem language?",c:["PRD","MRD","BRD","SLA"],a:1,x:"The Market Requirements Document captures market/customer needs; the PRD translates them into product capabilities and specs."},
+{d:2,q:"Which document defines the product's features and specifications to satisfy market needs?",c:["MRD","PRD","Press release","Win/loss report"],a:1,x:"The Product Requirements Document specifies what the product will do to meet the MRD's needs."},
+{d:2,q:"A Business Requirements Document (BRD) primarily captures:",c:["UI colors","Business goals, objectives, and constraints for the initiative","Engineering task estimates","Customer support scripts"],a:1,x:"BRDs frame the business goals and constraints that solutions must satisfy."},
+{d:2,q:"Functional specifications describe:",c:["How the business will profit","What the system/product must do — its behaviors and functions","The org structure","Marketing slogans"],a:1,x:"Functional specs define required behaviors; design specs define how they will be implemented."},
+{d:2,q:"Which is the correct document flow from market to engineering?",c:["PRD → MRD → design spec","MRD → PRD → functional/design specifications","Design spec → MRD → PRD","BRD → design spec → MRD"],a:1,x:"Needs (MRD) drive product definition (PRD), which drives functional and design specifications."},
+{d:2,q:"The AMA-style definition of marketing research emphasizes:",c:["Guessing based on intuition","Systematically linking the consumer to the marketer through information used to identify opportunities, evaluate actions, and monitor performance","Only measuring advertising","Replacing strategy"],a:1,x:"Marketing research is the systematic gathering, recording, and analysis of data to inform marketing decisions."},
+{d:2,q:"The distinction between 'market research' and 'marketing research' is that market research:",c:["Is concerned specifically with markets, while marketing research covers marketing processes broadly","Is always qualitative","Is done only by agencies","Is illegal in the EU"],a:0,x:"Experts distinguish market research (about markets) from marketing research (about the full marketing process)."},
+{d:2,q:"Which sampling problem occurs when survey respondents differ systematically from the target population?",c:["Sampling/selection bias","Perfect randomization","Conjoint analysis","Regression to the mean"],a:0,x:"Selection bias undermines generalizability — e.g., surveying only power users about ease of use."},
+{d:2,q:"A focus group is BEST used to:",c:["Produce statistically projectable results","Explore attitudes, language, and reactions in a moderated group discussion","Replace beta testing","Set final pricing"],a:1,x:"Focus groups are qualitative and exploratory; they don't produce projectable quantitative results."},
+{d:2,q:"Observing users in their natural environment to understand behavior in context is:",c:["Ethnographic research","Telephone survey","Syndicated panel","Delphi method"],a:0,x:"Ethnography observes real usage in context, revealing needs users may not articulate."},
+{d:2,q:"Win/loss analysis involves:",c:["Interviewing/analyzing why deals were won or lost to improve product and positioning","Counting sports scores","Auditing finance ledgers","Ranking employees"],a:0,x:"Win/loss analysis mines sales outcomes for product, pricing, and positioning insight."},
+{d:2,q:"Which financial concept represents revenue minus variable costs?",c:["Gross margin","Contribution margin","Net income","EBITDA"],a:1,x:"Contribution margin = revenue − variable costs; it 'contributes' to covering fixed costs and profit."},
+{d:2,q:"Gross margin is calculated as:",c:["(Revenue − COGS) / Revenue","Revenue / COGS","Fixed costs / unit price","Net profit / investment"],a:0,x:"Gross margin % = (Revenue − COGS) ÷ Revenue."},
+{d:2,q:"When comparing projects of different sizes and durations, which metric combination is MOST informative?",c:["NPV together with IRR and payback period","Payback period alone","Revenue alone","Headcount"],a:0,x:"NPV shows absolute value creation; IRR shows efficiency; payback shows liquidity/risk — together they inform the decision."},
+{d:2,q:"A positive-NPV project should still be rejected if:",c:["It has any risk at all","It conflicts with strategy or exceeds available resources/risk tolerance versus better alternatives","The NPV is greater than zero","Marketing likes it"],a:1,x:"NPV is necessary but not sufficient — strategic fit, capacity, and opportunity cost matter."},
+{d:2,q:"Which roadmap type organizes around customer/business outcomes rather than specific features?",c:["Outcome (or theme) roadmap","Gantt chart","Feature-date roadmap","Org chart"],a:0,x:"Outcome/theme roadmaps commit to goals rather than dated feature lists, preserving flexibility."},
+{d:2,q:"The MAIN risk of sharing a detailed, dated feature roadmap externally is:",c:["It's too short","Creating commitments that constrain the team when plans change","Customers ignore it","It cannot be printed"],a:1,x:"External dated roadmaps become de facto promises; slips damage credibility and can create legal exposure."},
+{d:2,q:"A go-to-market (GTM) strategy defines:",c:["How the product will reach and win its target market — segments, positioning, channels, pricing, and launch approach","Server architecture","The hiring plan for HR","Board meeting cadence"],a:0,x:"GTM covers target market, value proposition/positioning, channels, pricing, and launch motion."},
+{d:2,q:"Which research method BEST tests real willingness to pay?",c:["Asking 'would you pay $50?' casually","Behavioral methods like conjoint analysis, price testing, or actual pre-sales","Counting social media likes","Employee polls"],a:1,x:"Stated intent overestimates; conjoint and real purchase tests reveal actual willingness to pay."},
+{d:2,q:"Customer requirements gathered in VoC should be:",c:["Immediately converted into solutions without prioritization","Prioritized (e.g., by importance/satisfaction) and traced through to requirements","Ignored if inconvenient","Kept secret from engineering"],a:1,x:"Needs are prioritized and traced into requirements documents so investment follows importance."},
+{d:2,q:"Which is a SECONDARY research source for competitive analysis?",c:["Your own customer interviews","Competitor annual reports, analyst coverage, and public filings","A usability test you run","Your beta telemetry"],a:1,x:"Public/competitor-published materials are secondary sources; your own studies are primary."},
+{d:2,q:"An executive summary in a business case should:",c:["Be written last and concisely state the opportunity, solution, financials, and recommendation","List every requirement","Contain only legal disclaimers","Be longer than the body"],a:0,x:"The executive summary distills the whole case for decision-makers — typically drafted after the analysis is complete."},
+{d:2,q:"Which qualitative-then-quantitative sequence is BEST practice?",c:["Quant first to discover, qual to validate","Qual to discover and frame hypotheses, then quant to validate and size them","Only qual ever","Only quant ever"],a:1,x:"Discover with qualitative, then validate/measure with quantitative — the standard research sequence."},
+{d:2,q:"A survey question that suggests its own answer ('Don't you agree our award-winning product is easy to use?') is:",c:["A leading (biased) question","A screening question","A Likert item","A conjoint task"],a:0,x:"Leading questions bias responses and corrupt findings; neutral wording is required."},
+{d:2,q:"Risk assessment in a business case should include:",c:["Only technical risks","Market, technical, financial, and execution risks with mitigation plans","No risks, to keep approval likely","Only competitor names"],a:1,x:"Credible cases enumerate key risk categories and mitigations."},
+{d:2,q:"Which metric pair BEST supports a pricing decision for a new product?",c:["Customer value perception and competitive price benchmarks","Office rent and utilities","Sprint velocity and bug count","Employee NPS"],a:0,x:"Price is set primarily on customer value, bounded by competition and cost floors."},
+{d:2,q:"'Product mix consistency' refers to:",c:["How closely related the various product lines are in use, production, or channels","The number of SKUs","Profit margin uniformity","Packaging colors"],a:0,x:"Consistency describes how related lines are — affecting brand coherence and operational synergy."},
+{d:2,q:"Which document typically contains acceptance criteria for individual capabilities in agile settings?",c:["User stories (with acceptance criteria)","The press kit","The EOL notice","The BCG matrix"],a:0,x:"Agile requirements live in user stories with acceptance criteria — the fine-grained analog of spec documents."},
+{d:2,q:"When market research budget is near zero, the PM's BEST first move is:",c:["Skip research entirely","Leverage secondary research and internal data (support tickets, sales notes, telemetry) before commissioning studies","Buy the most expensive panel","Guess"],a:1,x:"Free/cheap secondary and internal sources answer many questions and sharpen any later primary research."},
+{d:2,q:"A pilot or test market launch is used to:",c:["Delay the product indefinitely","Validate demand, messaging, and operations in a limited market before full rollout","Replace the business case","Avoid making pricing decisions"],a:1,x:"Test markets de-risk full launch by validating the mix in a contained real-world setting."}
+);
+QB.push(
+{d:3,q:"A PM must align engineering, sales, and finance on a new initiative but has no direct authority over any of them. This is BEST described as:",c:["A failure of organizational design","Influence without authority — a core PM competency","A matrix problem requiring CEO escalation","The Project Manager's job"],a:1,x:"Influence without authority is the defining PM leadership skill."},
+{d:3,q:"Which McKinsey 7S element concerns the values and beliefs guiding employee behavior?",c:["Strategy","Structure","Style","Shared Values"],a:3,x:"Shared Values sit at the center of the 7S model as the organization's guiding beliefs."},
+{d:3,q:"The 'hard' elements of McKinsey 7S are:",c:["Strategy, Structure, Systems","Skills, Staff, Style","Shared Values, Skills, Staff","Strategy, Staff, Style"],a:0,x:"Hard S's: Strategy, Structure, Systems. Soft S's: Skills, Staff, Style, Shared Values."},
+{d:3,q:"McKinsey 7S is MOST useful for:",c:["Calculating NPV","Examining organizational alignment, especially during change","Setting product prices","Writing user stories"],a:1,x:"7S diagnoses whether the seven organizational elements are aligned — commonly used in change management."},
+{d:3,q:"In a functional organization, a key weakness for product management is:",c:["Too much product ownership","Limited product ownership; cross-functional conflicts resolved mainly through discussion/escalation","Excessive duplication of product resources","Too much customer focus"],a:1,x:"Functional structures give strong functional depth but weak end-to-end product accountability."},
+{d:3,q:"A product-centric organization's main drawback is:",c:["No product focus","Potential duplication of resources across product teams","No clear ownership","Weak product knowledge"],a:1,x:"Product structures create clear ownership but can duplicate functions (marketing, ops) per product."},
+{d:3,q:"An organization structured around Market A, Market B, and Market C customers is a:",c:["Functional organization","Market/customer organization","Matrix organization","Holacracy"],a:1,x:"Market-based structures organize around customer segments — strong customer focus, weaker product authority."},
+{d:3,q:"In a matrix organization, product managers:",c:["Have direct authority over all functions","Coordinate across departments without direct authority, creating high coordination demands","Report only to engineering","Do not exist"],a:1,x:"Matrix = dual reporting lines; PMs coordinate laterally, which raises influence and conflict-management demands."},
+{d:3,q:"Which team member acts as the 'voice of the customer' evaluating customer perception of value?",c:["Product Manager (PdM)","Product Marketing Manager (PmM)","QA Manager","Development Manager"],a:1,x:"AIPMM: the PmM represents the customer's voice and outbound value perception; the PdM drives internal value creation."},
+{d:3,q:"Which team member owns schedule, scope, and cost for the development effort?",c:["Project Manager","Product Manager","Sales Manager","Support Manager"],a:0,x:"The Project Manager manages the triple constraint; the Product Manager owns the what and why."},
+{d:3,q:"Requirements elicitation and documentation is the specialty of the:",c:["Business Analyst","PR Manager","Scrum Master","CFO"],a:0,x:"Business Analysts elicit, analyze, and document requirements on the core team."},
+{d:3,q:"In SWOT, 'Opportunities' and 'Threats' are:",c:["Internal factors","External factors","Financial metrics","Personality traits"],a:1,x:"Strengths/Weaknesses are internal; Opportunities/Threats are external."},
+{d:3,q:"A resource constraint like an understaffed data science team appears in SWOT as a:",c:["Strength","Weakness","Opportunity","Threat"],a:1,x:"Internal gaps and constraints are Weaknesses."},
+{d:3,q:"New regulation that could restrict your product category is a SWOT:",c:["Strength","Weakness","Opportunity","Threat"],a:3,x:"External unfavorable forces are Threats."},
+{d:3,q:"The FIRST step of stakeholder management is:",c:["Sending a newsletter","Identifying stakeholders early and mapping their influence and interest","Scheduling a launch party","Escalating to the CEO"],a:1,x:"Identify → categorize by influence/interest → tailor communication plans."},
+{d:3,q:"High-influence, high-interest stakeholders should be:",c:["Ignored","Managed closely with frequent, tailored engagement","Only emailed annually","Removed from the project"],a:1,x:"The influence/interest grid: manage closely (high/high), keep satisfied, keep informed, monitor."},
+{d:3,q:"Calling the PM the product's 'internal CEO' means:",c:["The PM can fire anyone","The PM takes end-to-end ownership and aligns stakeholders around product success without formal authority","The PM sets company-wide salaries","The PM reports to no one"],a:1,x:"The metaphor describes broad accountability and cross-functional alignment responsibility, not formal power."},
+{d:3,q:"Two functional leads deadlock over launch priorities. The PM's BEST first move is:",c:["Escalate immediately to the CEO","Facilitate a decision using shared goals, data, and documented trade-offs","Pick sides based on friendship","Delay the launch indefinitely"],a:1,x:"PMs resolve conflict first through facilitation, shared objectives, and evidence; escalation is a later resort."},
+{d:3,q:"Which behavior BEST builds a PM's influence capital across functions?",c:["Hoarding information","Consistently delivering on commitments and communicating transparently","Taking credit for others' work","Bypassing all managers"],a:1,x:"Trust from reliability and transparency is the currency of influence without authority."},
+{d:3,q:"An effective roadmap review meeting should:",c:["Present decisions as unchangeable and skip questions","Align stakeholders on priorities, surface concerns, and record decisions and trade-offs","Exclude sales","Focus only on engineering tasks"],a:1,x:"Roadmap reviews exist to create alignment and make trade-offs explicit."},
+{d:3,q:"A newly formed cross-functional team is arguing over ways of working. Per Tuckman's model, this stage is:",c:["Forming","Storming","Norming","Performing"],a:1,x:"Tuckman: Forming → Storming (conflict) → Norming → Performing → Adjourning."},
+{d:3,q:"During which Tuckman stage does the team establish shared norms and settle roles?",c:["Forming","Storming","Norming","Adjourning"],a:2,x:"Norming is when conflict resolves into agreed working practices before high-output Performing."},
+{d:3,q:"Which communication practice BEST serves distributed cross-functional teams?",c:["Relying on hallway conversations","Documented decisions, clear owners, and regular structured communication cadences","One annual meeting","Private verbal agreements"],a:1,x:"Distributed alignment requires written decisions and predictable communication rhythms."},
+{d:3,q:"When executives keep overriding product priorities ad hoc, the PM's BEST structural remedy is:",c:["Quit","Establish an agreed prioritization framework and decision rights (e.g., gate/portfolio process)","Hide the roadmap","Comply silently each time"],a:1,x:"Codified decision criteria and forums convert ad-hoc power into governed decisions."},
+{d:3,q:"The RACI model is used to:",c:["Estimate market size","Clarify who is Responsible, Accountable, Consulted, and Informed for activities","Compute IRR","Design packaging"],a:1,x:"RACI charts prevent ownership confusion across cross-functional work."},
+{d:3,q:"In RACI, exactly one person should hold which role per deliverable?",c:["Responsible","Accountable","Consulted","Informed"],a:1,x:"Single-point accountability: one Accountable owner per deliverable; multiple people can be Responsible."},
+{d:3,q:"A PmM and PdM disagree: PmM wants launch messaging simplified; PdM worries about accuracy. Best resolution:",c:["PdM pulls rank","Test messaging with target customers and align on evidence","Flip a coin","Skip messaging entirely"],a:1,x:"Customer evidence resolves internal opinion conflicts — a recurring AIPMM theme."},
+{d:3,q:"Which is a sign of a healthy core product team?",c:["Functions attend gates unprepared","Clear shared goals, defined roles, and open debate followed by commitment","Decisions made only in private","Sales excluded from launch planning"],a:1,x:"Healthy teams share goals, know their roles, and commit after honest debate."},
+{d:3,q:"'Managing up' for a PM primarily means:",c:["Flattering executives","Keeping leadership informed with the right altitude of information and framing decisions they need to make","Delegating your work to your boss","Withholding bad news"],a:1,x:"Managing up = proactive, decision-oriented communication with leadership."},
+{d:3,q:"Organizational change initiatives fail MOST often because:",c:["Logos change too fast","Soft factors — culture, buy-in, communication — are neglected","Too much attention to people","Spreadsheets are hard"],a:1,x:"7S insight: hard-factor changes fail without aligning soft factors like shared values and skills."},
+{d:3,q:"Which structure gives a PM the STRONGEST direct authority over product decisions?",c:["Functional","Product-centric","Market-based","None — even product-centric PMs coordinate through influence"],a:1,x:"Product organizations concentrate product ownership under the PM, though influence still matters everywhere."},
+{d:3,q:"A stakeholder communication plan should vary by:",c:["Stakeholder influence, interest, and information needs","Alphabetical order","Office location only","Salary band"],a:0,x:"Tailor frequency, channel, and content to each stakeholder category."},
+{d:3,q:"The BEST way to gain engineering's trust as a PM is to:",c:["Promise customers whatever they ask","Bring validated customer problems and clear priorities, and respect technical trade-offs","Change priorities daily","Skip technical discussions"],a:1,x:"Engineers trust PMs who bring real problems, stable priorities, and informed trade-off discussions."},
+{d:3,q:"When a launch requires support, sales, marketing, and ops readiness, the PM should:",c:["Assume each function will figure it out","Drive a cross-functional launch plan with owners, dates, and readiness criteria","Do every function's job personally","Delay informing support until launch day"],a:1,x:"PMs orchestrate readiness through explicit cross-functional planning — influence in action."},
+{d:3,q:"Which soft skill is MOST critical when the PM must deliver a 'No-Go' recommendation on a project the sponsor loves?",c:["Data-backed candor with empathy and a clear rationale","Avoidance","Sarcasm","Anonymous feedback"],a:0,x:"Difficult messages require evidence, directness, and empathy — key PM leadership behaviors."},
+{d:3,q:"Consensus-building in cross-functional teams works BEST when the PM:",c:["Frames decisions around shared goals and objective criteria agreed in advance","Lets the loudest voice win","Makes all decisions secretly","Defers every decision upward"],a:0,x:"Pre-agreed criteria and shared goals depersonalize decisions and enable commitment."},
+{d:3,q:"Which is TRUE about the PdM/PmM split in AIPMM's model?",c:["PdM = outbound only","PdM directs internal value creation; PmM evaluates and communicates customer-perceived value","PmM writes code","They are always the same person by rule"],a:1,x:"PdM = inbound/internal value; PmM = outbound/customer value. One person may wear both hats, but the functions differ."},
+{d:3,q:"A core team member consistently misses gate deliverables. The PM should FIRST:",c:["Publicly shame them","Address it directly with the member, understand blockers, and agree on a recovery plan","Escalate to HR immediately","Remove the gate"],a:1,x:"Direct, private problem-solving precedes escalation."},
+{d:3,q:"Team incentives that reward only functional metrics (e.g., sales volume regardless of margin) create:",c:["Perfect alignment","Misalignment with product/portfolio goals that the PM must surface and address","Faster gates","Better documentation"],a:1,x:"Incentive misalignment is an organizational issue PMs must recognize and raise."},
+{d:3,q:"'Escalation' is used correctly when:",c:["Used first, for every disagreement","Reserved for decisions beyond the team's authority or unresolved after good-faith attempts, presented with options","Used to punish colleagues","Avoided even when a decision is blocked for months"],a:1,x:"Escalate deliberately: after facilitation fails or when authority is genuinely lacking — and bring options, not just problems."},
+{d:3,q:"Which practice MOST improves cross-functional gate meetings?",c:["Distributing deliverables and criteria in advance so decisions, not readings, happen in the meeting","No agendas","Inviting the whole company","Deciding before reviewing evidence"],a:0,x:"Pre-reads plus clear criteria make gates decision forums rather than status theater."},
+{d:3,q:"A PM discovers sales is promising unbuilt features to close deals. Best response:",c:["Ignore it","Align with sales leadership on roadmap communication rules and provide approved collateral","Publicly blame reps","Build whatever was promised"],a:1,x:"Fix the system: agreed communication guardrails and enablement materials."},
+{d:3,q:"Which factor is a 'soft' element in 7S?",c:["Systems","Structure","Style","Strategy"],a:2,x:"Style (leadership/management style) is soft, along with Skills, Staff, Shared Values."},
+{d:3,q:"The PRIMARY purpose of a core cross-functional product team is to:",c:["Reduce meeting invitations","Bring all functions needed for product success into shared planning and decisions across the lifecycle","Replace the executive team","Isolate engineering from customers"],a:1,x:"Core teams institutionalize cross-functional ownership of the product across its lifecycle."}
+);
+QB.push(
+{d:4,q:"In Scrum, who is responsible for prioritizing the product backlog?",c:["Scrum Master","Development Team","Product Owner","Stakeholders"],a:2,x:"The Product Owner owns and orders the backlog to maximize value."},
+{d:4,q:"A well-written user story follows the format:",c:["'The system shall [function] when [condition]'","'As a [user type], I want [goal], so that [benefit]'","'Feature: [name] | Priority | Effort'","'Given [context], when [action], then [result]'"],a:1,x:"That's the user story template; 'Given/When/Then' (option D) is Gherkin acceptance-criteria format."},
+{d:4,q:"Waterfall development is BEST suited to:",c:["Rapidly changing consumer software","Stable requirements, regulatory environments, and hardware products","Products with unknown users","Startups pivoting weekly"],a:1,x:"Waterfall's sequential phases fit stable, well-specified, regulated, or hardware contexts."},
+{d:4,q:"Waterfall's PRIMARY weakness is:",c:["Too many releases","Inflexibility when requirements change after early phases","Excessive customer feedback","Too little documentation"],a:1,x:"Late-discovered changes are expensive because each phase depends on frozen upstream outputs."},
+{d:4,q:"The correct Waterfall phase order is:",c:["Design → Requirements → Test → Development","Requirements → Design → Development → Test → Deploy → Maintain","Development → Requirements → Deploy → Design","Test → Design → Requirements → Deploy"],a:1,x:"Waterfall flows sequentially from requirements through maintenance."},
+{d:4,q:"Agile development is characterized by:",c:["A single big-bang release","Iterative, incremental delivery with continuous feedback in short cycles","No customer involvement","Sequential frozen phases"],a:1,x:"Agile delivers value in short iterations with ongoing customer feedback and adaptation."},
+{d:4,q:"A typical Scrum sprint length is:",c:["1 day","2 weeks (1–4 weeks)","6 months","1 year"],a:1,x:"Sprints are time-boxed iterations, commonly two weeks, never more than about a month."},
+{d:4,q:"Which is a Scrum ceremony?",c:["Gate review","Sprint Retrospective","Annual audit","Board meeting"],a:1,x:"Scrum ceremonies: Sprint Planning, Daily Standup, Sprint Review, Sprint Retrospective."},
+{d:4,q:"The Sprint Review differs from the Retrospective in that the Review:",c:["Inspects the product increment with stakeholders; the Retrospective inspects the team's process","Is only for HR","Happens before the sprint starts","Replaces testing"],a:0,x:"Review = product feedback; Retrospective = process improvement."},
+{d:4,q:"The Scrum Master's role is to:",c:["Prioritize the backlog","Facilitate the process, remove impediments, and coach the team","Manage the P&L","Write all the code"],a:1,x:"The Scrum Master is a servant-leader for process health — not the backlog owner or people manager."},
+{d:4,q:"A burndown chart shows:",c:["Revenue by region","Remaining work versus time in a sprint or release","Employee attrition","Server temperatures"],a:1,x:"Burndown tracks remaining effort against the time box, exposing schedule risk early."},
+{d:4,q:"Story points measure:",c:["Exact hours","Relative size/complexity of work items","Lines of code","Team happiness"],a:1,x:"Points are relative estimates of effort/complexity/uncertainty, not absolute time."},
+{d:4,q:"Kanban primarily manages flow by:",c:["Time-boxed sprints","Visualizing work and limiting work in progress (WIP)","Annual planning","Gates"],a:1,x:"Kanban = visualize workflow, limit WIP, optimize flow — no required sprints."},
+{d:4,q:"In Stage-Gate vs. Agile comparisons, Agile is generally:",c:["Better for large capital-intensive physical products","More flexible, best for software and fast-changing markets, with just-in-time documentation","Heavier on upfront documentation","Slower to respond to change"],a:1,x:"Agile trades upfront documentation for adaptability; Stage-Gate suits big-bet physical products."},
+{d:4,q:"True or False: Stage-Gate and Agile can be combined — e.g., Agile development inside the Develop stage of a gated process.",c:["True","False"],a:0,x:"True — hybrid models use gates for investment decisions and Agile for execution between gates."},
+{d:4,q:"An MVP (Minimum Viable Product) is:",c:["The cheapest possible product regardless of value","The smallest version that delivers value and enables validated learning","A prototype never shown to users","The final release"],a:1,x:"MVPs test critical assumptions with real users at minimal cost — a Lean Startup core concept."},
+{d:4,q:"The Lean Startup loop is:",c:["Plan-Do-Check-Act","Build-Measure-Learn","Conceive-Plan-Develop","Define-Measure-Analyze"],a:1,x:"Build → Measure → Learn drives iterative validation of assumptions."},
+{d:4,q:"A 'pivot' in Lean Startup means:",c:["Firing the team","A structured change in strategy based on validated learning, keeping what works","Abandoning all learning","Raising prices"],a:1,x:"Pivots redirect strategy (segment, problem, channel) based on evidence while retaining validated elements."},
+{d:4,q:"Technology Readiness Levels (TRL) run from:",c:["1 (basic research) to 9 (fully deployed/proven system)","0 to 100","A to F","1 to 3"],a:0,x:"TRL 1–9 assesses technology maturity before committing to development."},
+{d:4,q:"A technology at TRL 3 (proof of concept) implies:",c:["Ready for mass production","Significant development risk remains before productization","No further testing needed","It is already launched"],a:1,x:"Low TRL = early maturity = high technical risk to retire before committing product plans."},
+{d:4,q:"Acceptance criteria define:",c:["The marketing budget","The conditions under which a story/feature is considered done and acceptable","The org chart","Sprint length"],a:1,x:"Acceptance criteria make 'done' objective and testable for each story."},
+{d:4,q:"In Scrum, the Product Owner role maps MOST closely to which broader role?",c:["The product manager (or a delegate) focused on backlog value decisions","The CFO","The Scrum Master","A QA engineer"],a:0,x:"The PO is the value-decision role; in many orgs the PdM or a delegate fills it. PdMs influence beyond the backlog."},
+{d:4,q:"Which situation argues for Waterfall over Agile?",c:["A web app with weekly user feedback","Firmware for an aircraft component with fixed certification requirements","A/B-tested landing pages","An experimental social app"],a:1,x:"Fixed, certifiable, safety-critical requirements favor plan-driven approaches."},
+{d:4,q:"The Daily Standup exists to:",c:["Report to executives","Synchronize the team on progress, plans, and impediments in a short time-box","Review the budget","Demo to customers"],a:1,x:"Standups are quick team synchronization — not status reporting to management."},
+{d:4,q:"'Definition of Done' differs from acceptance criteria because it:",c:["Applies to a single story only","Is a shared quality standard applying to ALL increments (tested, documented, deployable)","Is written by customers","Changes per story"],a:1,x:"DoD is the team-wide quality bar; acceptance criteria are story-specific."},
+{d:4,q:"Concurrent engineering in NPD means:",c:["Sequential handoffs only","Overlapping design, engineering, and manufacturing work in parallel to cut cycle time","Outsourcing everything","Testing after launch only"],a:1,x:"Parallel cross-functional work shortens time to market versus strict sequential handoffs."},
+{d:4,q:"Which artifact is the single ordered source of work for a Scrum team?",c:["The Product Backlog","The Gantt chart","The MRD","The org chart"],a:0,x:"The Product Backlog is the ordered list of everything that might be needed in the product."},
+{d:4,q:"A sprint backlog is:",c:["All work for the year","The set of backlog items selected for the current sprint plus the plan to deliver them","A list of bugs only","The roadmap"],a:1,x:"Sprint backlog = sprint goal items + delivery plan, owned by the developers."},
+{d:4,q:"Prototypes are used in NPD primarily to:",c:["Decorate the office","Reduce risk by testing concepts, usability, and feasibility before full investment","Replace market research entirely","Meet legal requirements only"],a:1,x:"Prototypes test assumptions cheaply — from paper mockups to functional models."},
+{d:4,q:"Velocity in Scrum is:",c:["A contractual commitment","The team's average completed story points per sprint, used for forecasting","A measure of code quality","Set by management"],a:1,x:"Velocity is an empirical planning aid, not a target or commitment imposed from outside."}
+);
+QB.push(
+{d:5,q:"According to Porter's Five Forces, which force applies when customers can easily switch to an alternative product meeting the same need?",c:["Bargaining Power of Buyers","Threat of New Entrants","Threat of Substitutes","Competitive Rivalry"],a:2,x:"Substitutes are different products fulfilling the same underlying need (e.g., video calls substituting for air travel)."},
+{d:5,q:"A company enters a new geographic market with its existing product line. Per the Ansoff Matrix this is:",c:["Product Development","Diversification","Market Penetration","Market Development"],a:3,x:"Market Development = existing product, new market. Penetration = existing/existing; Product Dev = new product/existing market; Diversification = new/new."},
+{d:5,q:"Selling more of an existing product to existing customers (e.g., via promotions) is:",c:["Market Penetration","Market Development","Product Development","Diversification"],a:0,x:"Penetration grows share in current markets with current products — the lowest-risk Ansoff quadrant."},
+{d:5,q:"Launching a brand-new product into a brand-new market is:",c:["Penetration","Diversification","Market Development","Product Development"],a:1,x:"Diversification (new product + new market) is the highest-risk growth strategy."},
+{d:5,q:"Which Five Force is MOST at play when two dominant suppliers control a critical component's price?",c:["Buyer power","Supplier power","Substitutes","New entrants"],a:1,x:"Concentrated suppliers of critical inputs wield high bargaining power."},
+{d:5,q:"Low barriers to entry in an industry primarily increase which force?",c:["Threat of New Entrants","Supplier power","Buyer power","Substitutes"],a:0,x:"Easy entry (low capital, no regulation, weak brand loyalty) raises the threat of new entrants."},
+{d:5,q:"PESTLE analysis covers:",c:["Political, Economic, Social, Technological, Legal, Environmental factors","Price, Earnings, Sales, Taxes, Labor, Equity","Product, Engineering, Strategy, Testing, Launch, EOL","People, Empathy, Systems, Trust, Leadership, Ethics"],a:0,x:"PESTLE assesses macro-environmental forces shaping strategy."},
+{d:5,q:"A new data-privacy law affecting your product would appear in PESTLE under:",c:["Social","Legal","Environmental","Economic"],a:1,x:"Regulation and legislation are Legal factors (Political covers government stability/policy direction)."},
+{d:5,q:"Porter's three generic competitive strategies are:",c:["Cost leadership, differentiation, focus","Growth, hold, harvest","Penetration, skimming, freemium","Inbound, outbound, hybrid"],a:0,x:"Compete on lowest cost, unique value, or narrow-segment focus — and avoid being 'stuck in the middle.'"},
+{d:5,q:"A boutique firm serving only left-handed golfers exceptionally well pursues which strategy?",c:["Cost leadership","Differentiation (broad)","Focus (niche)","Diversification"],a:2,x:"Focus targets a narrow segment with tailored value."},
+{d:5,q:"Blue Ocean Strategy advocates:",c:["Fighting for share in existing crowded markets","Creating uncontested market space through value innovation — differentiation AND low cost simultaneously","Only cutting prices","Copying the market leader"],a:1,x:"Blue Ocean = make competition irrelevant via value innovation, versus bloody 'red oceans.'"},
+{d:5,q:"The standard positioning statement template is:",c:["'For [target], [product] is the [category] that [key benefit] because [reason to believe]'","'We sell [product] cheaply'","'As a [user], I want [goal]'","'Given [context], when [action], then [result]'"],a:0,x:"Positioning statements define target, frame of reference, differentiation, and proof."},
+{d:5,q:"A perceptual map is used to:",c:["Visualize how customers perceive brands/products on key dimensions relative to competitors","Track sprint progress","Model cash flows","Diagram the org"],a:0,x:"Perceptual maps (e.g., price vs. quality axes) reveal positioning gaps and opportunities."},
+{d:5,q:"The correct strategic planning sequence is:",c:["Execute → analyze → define vision","Define vision/mission → external & internal analysis → generate options → select strategy → execute & monitor","Select strategy → skip analysis → hope","Monitor → execute → plan"],a:1,x:"Vision/mission first, then situation analysis (PESTLE/5 Forces/SWOT), then options, selection, execution, monitoring."},
+{d:5,q:"A mission statement describes:",c:["The organization's purpose and what it does today","Quarterly OKRs","The product backlog","Detailed financial projections"],a:0,x:"Mission = present purpose; vision = aspirational future state."},
+{d:5,q:"Product strategy should PRIMARILY derive from:",c:["Engineering preferences","Corporate/business strategy and validated market insight","Last year's budget alone","Competitor press releases only"],a:1,x:"Product strategy cascades from business strategy, informed by market analysis."},
+{d:5,q:"Which situation analysis pairing is correct?",c:["SWOT = internal+external synthesis; PESTLE = macro-environment; 5 Forces = industry structure","SWOT = pricing; PESTLE = team health; 5 Forces = sprint velocity","All three are financial models","5 Forces analyzes internal strengths"],a:0,x:"Each tool has a distinct scope: macro (PESTLE), industry (5 Forces), integrated internal/external (SWOT)."},
+{d:5,q:"High buyer power typically exists when:",c:["Customers are fragmented and switching costs are high","A few large customers buy in volume and can switch easily","The product is highly differentiated","Suppliers are concentrated"],a:1,x:"Concentrated, price-sensitive buyers with low switching costs squeeze margins."},
+{d:5,q:"Value innovation (Blue Ocean) uses which four-actions framework?",c:["Eliminate, Reduce, Raise, Create","Plan, Do, Check, Act","Build, Measure, Learn, Pivot","Forming, Storming, Norming, Performing"],a:0,x:"ERRC: eliminate and reduce industry factors while raising and creating others to break the value-cost trade-off."},
+{d:5,q:"Which roadmap practice BEST connects strategy to execution?",c:["Listing every feature request","Organizing roadmap items under strategic themes/outcomes tied to business goals","Hiding the roadmap from stakeholders","Committing exact dates 3 years out"],a:1,x:"Theme/outcome roadmaps trace work back to strategic intent."},
+{d:5,q:"A competitor launches a cheaper clone of your differentiated product. Your BEST strategic response is:",c:["Panic discounting to match","Reinforce differentiation and value communication while evaluating segment-specific responses","Retire your product","Sue them without analysis"],a:1,x:"Defend a differentiation position on value, not by abandoning it for a price war you may lose."},
+{d:5,q:"Core competencies are:",c:["Any activity a company performs","Unique organizational capabilities that are valuable, rare, and hard to imitate, underpinning competitive advantage","Employee certifications","Marketing slogans"],a:1,x:"Core competencies (Prahalad & Hamel) are the roots of durable advantage and inform build/buy decisions."},
+{d:5,q:"Which Ansoff strategy generally carries the LOWEST risk?",c:["Market Penetration","Market Development","Product Development","Diversification"],a:0,x:"Penetration stays with known products and known markets; risk rises with each new dimension."},
+{d:5,q:"First-mover advantage is MOST durable when:",c:["Anyone can copy the offer instantly","Network effects, switching costs, or scarce assets lock in early gains","There are no barriers at all","The market never grows"],a:1,x:"Without lock-in mechanisms, fast followers often win; durability requires structural advantages."},
+{d:5,q:"Strategic 'fit' at gate reviews asks whether the product:",c:["Uses the newest tech","Advances the company's strategy, brand, and portfolio goals","Is fun to build","Has the longest feature list"],a:1,x:"Strategic alignment is a primary screening criterion throughout the funnel."},
+{d:5,q:"Differentiation succeeds ONLY when the difference is:",c:["Invisible to customers","Valued by customers, communicated clearly, and hard to copy","Cheap to imitate","Unrelated to customer needs"],a:1,x:"A differentiator must matter to buyers, be perceived, and resist imitation to command premium."},
+{d:5,q:"Which analysis BEST precedes a market-entry decision into a new country?",c:["PESTLE plus market sizing and competitive analysis","Only a team vote","A single customer interview","Sprint retrospective"],a:0,x:"Macro factors, market size, and competitive structure are the entry-decision fundamentals."},
+{d:5,q:"'Stuck in the middle' (Porter) describes a firm that:",c:["Dominates two strategies at once successfully","Fails to commit to cost leadership, differentiation, or focus, achieving none","Focuses on one niche","Leads on cost"],a:1,x:"Firms pursuing everything achieve no distinct advantage — Porter's classic warning."},
+{d:5,q:"OKRs connect strategy to execution by:",c:["Setting qualitative Objectives with measurable Key Results cascaded through the org","Replacing all strategy","Tracking hours worked","Assigning blame"],a:0,x:"Objectives and Key Results translate strategic intent into measurable outcomes teams can own."},
+{d:5,q:"When corporate strategy shifts away from your product's market, the PM should:",c:["Ignore the shift","Reassess the product's role and lifecycle plan — including possible divestment or harvest — against the new strategy","Demand more budget","Rebrand the product"],a:1,x:"Strategic misalignment is a legitimate trigger for portfolio and lifecycle re-decisions."},
+{d:6,q:"Net Promoter Score (NPS) is calculated as:",c:["% Promoters (9–10) minus % Detractors (0–6)","Average of all scores","% satisfied customers","Promoters divided by detractors"],a:0,x:"NPS = %Promoters − %Detractors; passives (7–8) are excluded from the calculation."},
+{d:6,q:"Customer Acquisition Cost (CAC) is:",c:["Total sales & marketing cost to acquire customers divided by number of new customers acquired","The product's unit cost","Revenue per customer","Support cost per ticket"],a:0,x:"CAC = acquisition spend ÷ new customers in the period."},
+{d:6,q:"A healthy SaaS business typically wants LTV:CAC of at least:",c:["0.5:1","1:1","3:1","100:1"],a:2,x:"The common benchmark is LTV ≥ 3× CAC, balancing growth spend and unit economics."},
+{d:6,q:"Churn rate measures:",c:["New signups","The percentage of customers (or revenue) lost in a period","Website visits","Feature count"],a:1,x:"Churn = lost customers/revenue ÷ base at period start; retention is its complement."},
+{d:6,q:"TAM, SAM, and SOM represent:",c:["Total market opportunity, the portion you can serve, and the share you can realistically capture near-term","Three pricing tiers","Types of surveys","Sprint metrics"],a:0,x:"TAM ⊃ SAM ⊃ SOM — the standard market-sizing funnel."},
+{d:6,q:"Your product serves only English-speaking SMBs in North America. That slice of the total market is your:",c:["TAM","SAM","SOM","NPS"],a:1,x:"SAM = the portion of TAM your offering and channels can actually serve; SOM is what you'll realistically win."},
+{d:6,q:"DAU/MAU ratio is a measure of:",c:["Revenue growth","Engagement/stickiness — how frequently monthly users return daily","Gross margin","Market share"],a:1,x:"DAU÷MAU indicates how habitually users engage (e.g., 0.5 = average user active 15 days/month)."},
+{d:6,q:"Feature adoption rate tells a PM:",c:["How many customers use a specific capability, indicating its realized value","Server uptime","Employee retention","Ad impressions"],a:0,x:"Low adoption of shipped features signals discoverability, need, or usability problems."},
+{d:6,q:"The Business Model Canvas contains how many building blocks?",c:["4","7","9","12"],a:2,x:"Nine: Customer Segments, Value Propositions, Channels, Customer Relationships, Revenue Streams, Key Resources, Key Activities, Key Partnerships, Cost Structure."},
+{d:6,q:"In the Business Model Canvas, the promise of value delivered to a segment lives in:",c:["Cost Structure","Value Propositions","Key Partnerships","Channels"],a:1,x:"The Value Proposition block defines the bundle of value for each customer segment."},
+{d:6,q:"A business model describes:",c:["Only the pricing page","How an organization creates, delivers, and captures value","The office layout","The codebase"],a:1,x:"Create, deliver, capture value — the canonical definition, used to describe/classify businesses and explore opportunities."},
+{d:6,q:"A competitive battlecard is:",c:["A legal filing","A concise sales-facing summary of a competitor's strengths, weaknesses, and how to win against them","A pricing spreadsheet","A game"],a:1,x:"Battlecards equip sales with competitor talking points and objection handling."},
+{d:6,q:"A feature comparison matrix is MOST useful for:",c:["Structured competitor capability comparison and gap identification","Estimating sprint velocity","Payroll","Office seating"],a:0,x:"It maps features across competitors to reveal strengths, gaps, and positioning angles."},
+{d:6,q:"Market share is calculated as:",c:["Your sales ÷ total market sales for the period","Your revenue ÷ your costs","Units produced ÷ units planned","Customers ÷ employees"],a:0,x:"Share = your sales (units or revenue) as a fraction of the total market's."},
+{d:6,q:"Which KPI set BEST monitors post-launch product health?",c:["Adoption, retention/churn, NPS, revenue vs. plan, margin","Lines of code, meetings held","Office temperature","Number of gates passed"],a:0,x:"Customer and commercial outcome metrics — not activity metrics — measure product health."}
+);
+QB.push(
+{d:1,q:"Which statement BEST captures the PM's responsibility across the whole lifecycle?",c:["Own only the launch event","Make effective, real-world decisions at each phase — from concept screening through retirement — to maximize the product's business contribution","Delegate all decisions to engineering","Focus exclusively on marketing communications"],a:1,x:"AIPMM tests PLM as continuous decision-making across every phase, with the PM accountable for business outcomes."},
+{d:2,q:"A PM must choose between interviewing 12 target users or surveying 800. The deciding factor should be:",c:["Whichever is cheaper, always","Whether the goal is discovering needs (interviews) or measuring/validating at scale (survey)","Whichever finishes first","The CEO's preference"],a:1,x:"Match method to purpose: qualitative for depth and discovery, quantitative for measurement and validation."},
+{d:3,q:"A launch slips because support wasn't trained. In RACI terms, the root failure was MOST likely:",c:["Too many people Informed","No one clearly Accountable for support readiness","Too few meetings","An oversized budget"],a:1,x:"Missing single-point accountability for a readiness workstream is the classic cause of dropped launch tasks."}
+);
+const CONCEPTS = {
+1: {title:"Product Lifecycle Management", weight:"~40% of exam — your #1 priority", html:`
+<h3>The two lifecycles (don't confuse them)</h3>
+<p><b>Market PLC (what the market does):</b> Introduction → Growth → Maturity → Decline (→ Withdrawal). <b>ProdBOK process (what YOU do):</b> Conceive → Plan → Develop → Qualify → Launch → Deliver → Retire — each phase preceded by a cross-functional <b>gate</b>.</p>
+<h3>Stage characteristics & PM actions</h3>
+<p><b>Introduction:</b> low sales, high cost, few competitors → build awareness, set up distribution, choose pricing (penetration = low to grab share; skimming = high for early adopters, drop later). Highest marketing spend relative to revenue.<br>
+<b>Growth:</b> rapid sales, competitors flood in, profits rise → scale production, expand distribution aggressively, refine positioning. Forecasting/supply failures here cost you the market.<br>
+<b>Maturity:</b> sales peak/plateau, heaviest competition, profits peak early then erode → differentiate, cut costs, segment, tier pricing, find new uses/users/usage. Watch for commoditization.<br>
+<b>Decline:</b> falling sales → choose: <b>harvest</b> (cut investment, milk cash), <b>divest</b> (sell), <b>reposition</b> (new segment), or <b>retire</b>.</p>
+<h3>Gates (heavily tested)</h3>
+<p>Decisions: <b>Go / No-Go / Hold / Recycle</b>. Go = proceed with resources. No-Go = kill. Hold = pause, revisit. Recycle = rework deliverables, re-present. Gates are <b>investment control checkpoints</b> — funding increases incrementally as uncertainty falls. Gatekeepers = cross-functional leaders who control resources. Criteria: strategic alignment, market attractiveness, technical feasibility, financial return. Early gates do <b>screening</b> (many ideas → viable few).</p>
+<h3>Portfolio management</h3>
+<p>BCG (relative market share × market growth): <b>Star</b> (high/high — invest), <b>Cash Cow</b> (high share/low growth — milk to fund others), <b>Question Mark</b> (low share/high growth — invest or divest), <b>Dog</b> (low/low — harvest/divest). GE-McKinsey generalizes to market attractiveness × competitive strength. Portfolio decisions: invest / maintain / harvest / divest.</p>
+<h3>Roles & concepts</h3>
+<p><b>Inbound PM</b> = the "radar": research, competitive intel, requirements, strategy. <b>Outbound</b> = GTM, sales training, advertising, PR. PdM owns Conceive→Launch and internal value creation (costs, profit). Adoption curve: Innovators → Early Adopters → <b>[CHASM]</b> → Early Majority → Late Majority → Laggards; cross the chasm with a beachhead niche + <b>whole product</b>. <b>Cannibalization</b> can be strategic (replace your own product before competitors do). <b>EOL:</b> notify customers, migration path, support wind-down dates, archive docs — never silent.</p>
+<p class="trap">⚠ Traps: profits peak in MATURITY (not growth); marketing spend ratio highest in INTRODUCTION; Recycle ≠ No-Go; PLC ≠ ProdBOK phases; harvest ≠ retire.</p>`},
+2: {title:"Marketing Research, Business Plans & Documentation", weight:"~20-25% of exam", html:`
+<h3>Research</h3>
+<p><b>Primary</b> = new data you collect (surveys, interviews, focus groups, ethnography, usability tests). <b>Secondary</b> = existing sources (analyst reports, gov data, competitor filings). <b>Qualitative</b> discovers & explores (small n, focus groups, ethnography); <b>quantitative</b> validates & measures (large n, surveys, conjoint). Sequence: qual first to frame, quant to validate. Watch for <b>selection bias</b> and <b>leading questions</b>. Willingness-to-pay: use behavioral methods (conjoint, real price tests), not "would you pay?"</p>
+<h3>Understanding customers</h3>
+<p><b>VoC</b> = structured capture of customer needs. <b>QFD/House of Quality</b> translates needs → technical characteristics. <b>JTBD</b> = the outcome the customer "hires" the product for. <b>Personas</b> = research-based archetypes. Good segments are measurable, accessible, substantial, differentiable, actionable. Segmentation types: geographic, demographic, psychographic (values/lifestyle), behavioral (usage/loyalty); B2B = firmographics.</p>
+<h3>Business case & finance (do the math cold)</h3>
+<p>Components: exec summary, problem/opportunity, market & competitive analysis, solution, financials, risks, recommendation.<br>
+<b>NPV</b> = PV of future cash flows − investment; positive → proceed. <b>ROI</b> = net profit ÷ investment. <b>IRR</b> = discount rate where NPV = 0. <b>Payback</b> = investment ÷ annual cash flow. <b>Break-even units</b> = fixed costs ÷ (price − variable cost). Contribution margin = revenue − variable costs. Gross margin = (revenue − COGS) ÷ revenue.</p>
+<h3>Pricing & marketing mix</h3>
+<p>Cost-plus (ignores value), value-based (preferred for differentiated), competitive, penetration (low→share), skimming (high→drop), freemium. <b>4 Ps:</b> Product, Price, Place, Promotion. <b>7 Ps (services):</b> + People, Process, Physical Evidence. <b>4 Cs:</b> Consumer wants, Cost, Convenience, Communication.</p>
+<h3>Services & documents</h3>
+<p>Service characteristics: <b>Intangibility</b> (can't inspect first), <b>Inseparability</b> (produced = consumed), <b>Variability</b> (quality varies), <b>Perishability</b> (can't inventory).<br>
+Document flow: <b>MRD</b> (market needs) → <b>PRD</b> (product specs) → functional/design specifications. <b>BRD</b> = business goals/constraints. Roadmap types: feature, theme, outcome — dated external roadmaps become promises.</p>
+<p class="trap">⚠ Traps: MRD = WHAT market needs, PRD = WHAT product does; perishability vs. intangibility; positive NPV is necessary but not sufficient (strategy still rules).</p>`},
+3: {title:"Teams, People & Organizational Issues", weight:"~15% of exam", html:`
+<h3>Org structures</h3>
+<p><b>Functional:</b> simple, strong functional depth, weak product ownership. <b>Product-centric:</b> clear ownership, risk of duplicated resources. <b>Market/customer:</b> strong customer focus, PM lacks full product authority. <b>Matrix:</b> functional + product combined; coordination without authority, high conflict potential.</p>
+<h3>Core team & roles</h3>
+<p><b>PdM</b> — investigates, selects, drives development; internal value creation (cost/profit). <b>PmM</b> — voice of the customer; customer-perceived value. <b>Project Manager</b> — schedule, scope, cost. <b>Business Analyst</b> — requirements. Plus dev, QA, support, sales managers. PM = "internal CEO": end-to-end accountability WITHOUT formal authority. <b>Influence without authority</b> is THE core PM competency — built via reliability, transparency, evidence.</p>
+<h3>Frameworks</h3>
+<p><b>McKinsey 7S</b> (org alignment/change): Hard = Strategy, Structure, Systems. Soft = Skills, Staff, Style, <b>Shared Values</b> (center of model). Change fails when soft factors are ignored.<br>
+<b>SWOT:</b> Strengths/Weaknesses = internal; Opportunities/Threats = external.<br>
+<b>RACI:</b> Responsible, Accountable (exactly ONE per deliverable), Consulted, Informed.<br>
+<b>Tuckman:</b> Forming → Storming (conflict) → Norming (norms set) → Performing → Adjourning.</p>
+<h3>Stakeholders & conflict</h3>
+<p>Identify early → map influence × interest → tailor communication (high/high = manage closely). Conflict: facilitate first with shared goals + data; escalate deliberately with options, not just problems. Resolve internal opinion battles with customer evidence.</p>
+<p class="trap">⚠ Traps: Style is a SOFT S (Shared Values ≠ Style); O and T in SWOT are EXTERNAL; one Accountable per deliverable; matrix ≠ product-centric.</p>`},
+4: {title:"New Product Development Methodology", weight:"~10% of exam", html:`
+<h3>Waterfall vs. Agile</h3>
+<p><b>Waterfall:</b> Requirements → Design → Development → Test → Deploy → Maintain. Best for stable requirements, regulated/safety-critical, hardware. Weakness: inflexible to change.<br>
+<b>Agile:</b> iterative sprints (1–4 wks, typically 2), continuous feedback, self-organizing cross-functional teams, just-enough documentation. Best for software and fast-changing markets. <b>Hybrids are valid:</b> Agile execution inside Stage-Gate investment gates.</p>
+<h3>Scrum (memorize the trios)</h3>
+<p><b>Roles:</b> Product Owner (owns/prioritizes backlog — the value decisions), Scrum Master (facilitates, removes impediments — NOT the boss), Development Team.<br>
+<b>Artifacts:</b> Product Backlog (single ordered work source), Sprint Backlog, Increment. Burndown chart = remaining work vs. time. Velocity = avg completed points/sprint (forecasting aid, not a commitment).<br>
+<b>Ceremonies:</b> Sprint Planning, Daily Standup (team sync, not status reporting), Sprint Review (inspect PRODUCT with stakeholders), Retrospective (inspect PROCESS).</p>
+<h3>Requirements & learning</h3>
+<p>User story: "As a [user], I want [goal], so that [benefit]." Acceptance criteria (often Given/When/Then) define done per story; <b>Definition of Done</b> = team-wide quality bar. Story points = relative complexity. <b>Kanban:</b> visualize flow, limit WIP, no required sprints.<br>
+<b>MVP</b> = smallest version that delivers value + enables validated learning. Lean Startup loop: <b>Build → Measure → Learn</b>; pivot = evidence-based strategy change. <b>TRL</b> 1 (basic research) → 9 (proven in operation). Concurrent engineering = parallel cross-functional work to cut cycle time.</p>
+<p class="trap">⚠ Traps: PO ≠ Scrum Master; Review (product) ≠ Retrospective (process); user story format ≠ Gherkin; velocity is not a contract.</p>`},
+5: {title:"Strategy", weight:"~10% of exam", html:`
+<h3>Analysis toolkit (know which tool for which scope)</h3>
+<p><b>PESTLE</b> = macro-environment: Political, Economic, Social, Technological, Legal, Environmental. <b>Porter's 5 Forces</b> = industry structure: Rivalry, New Entrants, Substitutes, Buyer Power, Supplier Power. <b>SWOT</b> = integrated internal + external synthesis. Sequence: vision/mission → external + internal analysis → options → selection → execution & monitoring.</p>
+<h3>Growth & competition</h3>
+<p><b>Ansoff:</b> Penetration (existing/existing — lowest risk), Market Development (existing product/new market), Product Development (new product/existing market), Diversification (new/new — highest risk).<br>
+<b>Porter's generic strategies:</b> Cost Leadership, Differentiation, Focus — commit or be "stuck in the middle." Differentiation only works if customers value it, perceive it, and it resists copying.<br>
+<b>Blue Ocean:</b> create uncontested space via value innovation (differentiation AND low cost); ERRC grid: Eliminate, Reduce, Raise, Create. First-mover advantage endures only with lock-in (network effects, switching costs).</p>
+<h3>Positioning</h3>
+<p>Template: "For [target customer], [Product] is the [category] that [key benefit] because [reason to believe]." Perceptual maps plot perception vs. competitors to find gaps. Product strategy cascades FROM business strategy; roadmaps organized by themes/outcomes connect strategy to execution. Core competencies = valuable, rare, hard-to-imitate capabilities.</p>
+<p class="trap">⚠ Traps: substitutes (different product, same need) ≠ rivalry (same product); Legal ≠ Political in PESTLE; Market Dev = new MARKET, Product Dev = new PRODUCT.</p>`},
+6: {title:"Tools & Measurements", weight:"~5% of exam — quick wins", html:`
+<h3>Customer & growth metrics</h3>
+<p><b>NPS</b> = %Promoters(9–10) − %Detractors(0–6); passives excluded. <b>CAC</b> = sales+marketing spend ÷ new customers. <b>LTV/CLV</b> = lifetime customer value; healthy LTV:CAC ≈ 3:1+. <b>Churn</b> = % customers/revenue lost per period. <b>DAU/MAU</b> = stickiness/engagement. Feature adoption = % using a capability.</p>
+<h3>Market sizing</h3>
+<p><b>TAM</b> (total opportunity) ⊃ <b>SAM</b> (portion you can serve) ⊃ <b>SOM</b> (realistic near-term share). Market share = your sales ÷ total market sales.</p>
+<h3>Business model & competitive tools</h3>
+<p>Business model = how an org <b>creates, delivers, and captures value</b> (describe/classify businesses, explore opportunities). <b>Business Model Canvas — 9 blocks:</b> Customer Segments, Value Propositions, Channels, Customer Relationships, Revenue Streams, Key Resources, Key Activities, Key Partnerships, Cost Structure.<br>
+Competitive tools: feature comparison matrices, win/loss analysis, battlecards (sales-facing competitor playbooks).</p>
+<h3>Finance recap</h3>
+<p>NPV positive → proceed. IRR = rate where NPV=0. Payback = investment ÷ annual cash. Contribution margin = revenue − variable costs. Gross margin = (revenue − COGS) ÷ revenue.</p>
+<p class="trap">⚠ Traps: NPS passives (7–8) count in the denominator but not the formula's subtraction; SAM ≠ SOM; Canvas has NINE blocks.</p>`}
+};
+const FLASH = [
+{d:1,f:"The 4 classic PLC stages, in order",b:"Introduction → Growth → Maturity → Decline"},
+{d:1,f:"The 7 ProdBOK lifecycle phases, in order",b:"Conceive → Plan → Develop → Qualify → Launch → Deliver → Retire"},
+{d:1,f:"The 4 possible gate decisions",b:"Go, No-Go, Hold, Recycle"},
+{d:1,f:"Primary purpose of a gate",b:"Investment control checkpoint — cross-functional Go/No-Go decisions with incremental resource commitment"},
+{d:1,f:"4 standard gate criteria",b:"Strategic alignment, market attractiveness, technical feasibility, financial return"},
+{d:1,f:"BCG Matrix: the 4 quadrants",b:"Stars (high share/high growth), Cash Cows (high/low), Question Marks (low/high), Dogs (low/low)"},
+{d:1,f:"The 4 decline-stage options",b:"Harvest, Divest, Reposition, Retire"},
+{d:1,f:"Which PLC stage has the highest marketing spend relative to revenue?",b:"Introduction — awareness building with minimal revenue"},
+{d:1,f:"Which PLC stage do profits peak in?",b:"Maturity (early maturity) — sales peak, development costs absorbed"},
+{d:1,f:"Inbound vs. outbound product management",b:"Inbound = the 'radar': research, competitive intel, requirements, strategy. Outbound = GTM, sales training, advertising, PR"},
+{d:1,f:"Penetration vs. skimming pricing",b:"Penetration = low price to grab share fast. Skimming = high initial price for early adopters, lowered over time"},
+{d:1,f:"Cannibalization",b:"Your new product taking sales from your own existing product — can be strategic if planned"},
+{d:1,f:"Adopter categories in order (diffusion of innovation)",b:"Innovators → Early Adopters → [chasm] → Early Majority → Late Majority → Laggards"},
+{d:1,f:"The 'chasm' sits between which two groups?",b:"Early Adopters and the Early Majority (pragmatists needing a whole product)"},
+{d:1,f:"Whole product concept",b:"Mainstream buyers need the complete solution — product + services, integrations, support — not just core technology"},
+{d:1,f:"Screening",b:"Evaluating many new product ideas at early gates to reduce them to a viable few"},
+{d:1,f:"Key elements of a responsible EOL process",b:"Customer notification, migration path, final-order/end-of-support dates, support wind-down, documentation archiving"},
+{d:1,f:"Harvest strategy",b:"Cut investment to minimum while continuing to collect profits from remaining sales in decline"},
+{d:1,f:"3 maturity-extension levers",b:"New uses, new users/segments, increased usage frequency (+ product enhancements)"},
+{d:1,f:"GE-McKinsey matrix dimensions",b:"Market attractiveness × business/competitive strength (3×3)"},
+{d:2,f:"Primary vs. secondary research",b:"Primary = new data you collect (surveys, interviews). Secondary = existing sources (reports, filings, gov data)"},
+{d:2,f:"Qualitative vs. quantitative research",b:"Qualitative discovers/explores (small n); quantitative validates/measures (large n). Qual first, then quant"},
+{d:2,f:"VoC (Voice of the Customer)",b:"Structured process to capture customer needs, expectations, and preferences"},
+{d:2,f:"QFD / House of Quality",b:"Translates customer requirements ('whats') into technical product characteristics ('hows')"},
+{d:2,f:"Jobs-to-be-Done (JTBD)",b:"Framework focused on the outcome a customer is trying to achieve — what they 'hire' the product to do"},
+{d:2,f:"4 consumer segmentation types",b:"Geographic, Demographic, Psychographic (values/lifestyle), Behavioral (usage/loyalty). B2B = firmographics"},
+{d:2,f:"NPV rule",b:"NPV = PV of future cash flows − investment. Positive → proceed; negative → reject"},
+{d:2,f:"ROI formula",b:"Net profit ÷ investment cost × 100"},
+{d:2,f:"IRR definition",b:"The discount rate that makes NPV = 0; above the hurdle rate = attractive"},
+{d:2,f:"Payback period formula",b:"Initial investment ÷ annual net cash flow"},
+{d:2,f:"Break-even volume formula",b:"Fixed costs ÷ (price − variable cost per unit)"},
+{d:2,f:"Contribution margin",b:"Revenue − variable costs"},
+{d:2,f:"Gross margin",b:"(Revenue − COGS) ÷ Revenue"},
+{d:2,f:"The 4 Ps",b:"Product, Price, Place, Promotion (Kotler)"},
+{d:2,f:"The 3 extra Ps for services (7P mix)",b:"People, Process, Physical Evidence"},
+{d:2,f:"The 4 Cs (customer-oriented mix)",b:"Consumer wants, Cost, Convenience, Communication (map to Product, Price, Place, Promotion)"},
+{d:2,f:"4 service characteristics",b:"Intangibility, Inseparability, Variability (heterogeneity), Perishability"},
+{d:2,f:"Perishability",b:"Services can't be inventoried — unused capacity (empty seat, idle hour) is lost forever"},
+{d:2,f:"MRD vs. PRD",b:"MRD captures market/customer needs; PRD translates them into product features and specifications"},
+{d:2,f:"Document flow from market to engineering",b:"MRD → PRD → functional & design specifications"},
+{d:2,f:"6 pricing strategies",b:"Cost-plus, value-based (preferred for differentiated), competitive, penetration, skimming, freemium"},
+{d:2,f:"Business case components",b:"Exec summary, problem/opportunity, market analysis, competitive analysis, solution, financials (NPV/ROI/payback/IRR), risk assessment, recommendation"},
+{d:3,f:"McKinsey 7S: hard vs. soft factors",b:"Hard: Strategy, Structure, Systems. Soft: Skills, Staff, Style, Shared Values (center of the model)"},
+{d:3,f:"SWOT: internal vs. external",b:"Strengths & Weaknesses = internal; Opportunities & Threats = external"},
+{d:3,f:"4 org structures for PM and their key weakness",b:"Functional (weak product ownership), Product-centric (duplicated resources), Market-based (PM lacks product authority), Matrix (coordination without authority)"},
+{d:3,f:"PdM vs. PmM",b:"PdM drives development & internal value creation (cost/profit); PmM is voice of the customer & perceived value"},
+{d:3,f:"Core PM leadership competency",b:"Influence without authority — aligning cross-functional teams via trust, evidence, shared goals"},
+{d:3,f:"RACI",b:"Responsible, Accountable (exactly one per deliverable), Consulted, Informed"},
+{d:3,f:"Tuckman's team stages",b:"Forming → Storming → Norming → Performing → Adjourning"},
+{d:3,f:"Stakeholder management steps",b:"Identify early → map by influence × interest → tailored communication plans (high/high = manage closely)"},
+{d:3,f:"'Internal CEO' of the product means",b:"End-to-end accountability and stakeholder alignment WITHOUT formal authority"},
+{d:4,f:"Waterfall phase order",b:"Requirements → Design → Development → Test → Deploy → Maintain"},
+{d:4,f:"When to prefer Waterfall",b:"Stable requirements, regulated/safety-critical environments, hardware"},
+{d:4,f:"3 Scrum roles",b:"Product Owner (owns/prioritizes backlog), Scrum Master (facilitates, removes impediments), Development Team"},
+{d:4,f:"4 Scrum ceremonies",b:"Sprint Planning, Daily Standup, Sprint Review (product), Sprint Retrospective (process)"},
+{d:4,f:"User story format",b:"As a [user type], I want [goal], so that [benefit]"},
+{d:4,f:"Given/When/Then is the format for…",b:"Acceptance criteria (Gherkin) — NOT the user story itself"},
+{d:4,f:"MVP",b:"Smallest version of a product that delivers value and enables validated learning"},
+{d:4,f:"Lean Startup loop",b:"Build → Measure → Learn (pivot = evidence-based strategy change)"},
+{d:4,f:"Kanban's two core practices",b:"Visualize workflow; limit work in progress (WIP)"},
+{d:4,f:"TRL scale",b:"Technology Readiness Levels 1 (basic research) to 9 (proven in operations)"},
+{d:4,f:"Burndown chart",b:"Remaining work vs. time within a sprint/release"},
+{d:4,f:"Velocity",b:"Average story points completed per sprint — a forecasting aid, not a commitment"},
+{d:5,f:"Porter's Five Forces",b:"Competitive Rivalry, Threat of New Entrants, Threat of Substitutes, Buyer Power, Supplier Power"},
+{d:5,f:"Ansoff Matrix quadrants",b:"Penetration (existing/existing), Market Development (existing product/new market), Product Development (new product/existing market), Diversification (new/new)"},
+{d:5,f:"Lowest- and highest-risk Ansoff strategies",b:"Lowest = Market Penetration; highest = Diversification"},
+{d:5,f:"PESTLE",b:"Political, Economic, Social, Technological, Legal, Environmental"},
+{d:5,f:"Porter's 3 generic strategies",b:"Cost Leadership, Differentiation, Focus (niche) — avoid being 'stuck in the middle'"},
+{d:5,f:"Blue Ocean Strategy",b:"Create uncontested market space via value innovation — differentiation AND low cost. ERRC: Eliminate, Reduce, Raise, Create"},
+{d:5,f:"Positioning statement template",b:"For [target customer], [Product] is the [category] that [key benefit] because [reason to believe]"},
+{d:5,f:"Strategic planning sequence",b:"Vision/mission → external (PESTLE, 5 Forces) + internal (SWOT) analysis → options → selection → execute & monitor"},
+{d:5,f:"Substitutes vs. rivalry",b:"Substitutes = DIFFERENT products meeting the same need; rivalry = direct competitors with similar products"},
+{d:6,f:"NPS formula",b:"% Promoters (9–10) − % Detractors (0–6); passives (7–8) excluded from subtraction"},
+{d:6,f:"CAC",b:"Total sales & marketing acquisition spend ÷ number of new customers acquired"},
+{d:6,f:"Healthy LTV:CAC benchmark",b:"At least 3:1"},
+{d:6,f:"TAM / SAM / SOM",b:"Total Addressable Market ⊃ Serviceable Addressable (can serve) ⊃ Serviceable Obtainable (realistic near-term)"},
+{d:6,f:"Churn rate",b:"% of customers (or revenue) lost in a period; retention = 1 − churn"},
+{d:6,f:"DAU/MAU",b:"Engagement/stickiness — how habitually monthly users return daily"},
+{d:6,f:"Business model definition",b:"Framework describing how an organization creates, delivers, and captures value"},
+{d:6,f:"Business Model Canvas — 9 blocks",b:"Customer Segments, Value Propositions, Channels, Customer Relationships, Revenue Streams, Key Resources, Key Activities, Key Partnerships, Cost Structure"},
+{d:6,f:"Win/loss analysis",b:"Systematic review of why deals were won or lost, to improve product, pricing, and positioning"},
+{d:6,f:"Battlecard",b:"Concise sales-facing summary of a competitor and how to win against them"}
+];
+const ESSAYS=[
+{d:1,q:"Your company's flagship product has entered the Decline stage. Describe the four strategic options available and explain how you would decide among them.",
+pts:["Names all four options: harvest, divest, reposition, retire","Harvest = cut investment, maximize remaining cash flow","Divest = sell the product/line to another party","Reposition = re-invest to target a new segment or use case","Retire = orderly end-of-life with customer notification and migration","Decision criteria: profitability/contribution margin, strategic fit, installed base obligations, existence of a viable new segment"],
+model:"In Decline there are four options. Harvest: reduce investment to a minimum and collect remaining profits while sales last. Divest: sell the product to a buyer who values it more. Reposition: re-invest to serve a new segment or use case where the product can compete. Retire: withdraw via an orderly end-of-life process with customer notification, migration paths, and support wind-down. I would decide based on the product's contribution margin and trajectory, strategic alignment with company direction, the size and contractual obligations of the installed base, and whether evidence supports a genuinely viable repositioning opportunity. If margins are positive but the market is structurally shrinking, harvest; if a credible buyer exists, divest; if research validates a new segment, reposition; otherwise retire responsibly."},
+{d:1,q:"Explain the purpose of gates in a Stage-Gate process and describe the four possible gate decisions.",
+pts:["Gates are investment control checkpoints between phases","Cross-functional decision-makers who control resources make the call","Resource commitment increases incrementally as uncertainty falls","Go = proceed to next phase with committed resources","No-Go = terminate; Hold = pause and revisit; Recycle = rework deliverables and re-present","Gate criteria: strategic alignment, market attractiveness, technical feasibility, financial return"],
+model:"Gates are cross-functional investment control checkpoints placed before each lifecycle phase. Their purpose is to release funding incrementally: as a project passes each gate, uncertainty has been reduced, so the organization can rationally commit more resources while capping downside risk on weak ideas. Gatekeepers are leaders who control resources, evaluating prescribed deliverables against criteria such as strategic alignment, market attractiveness, technical feasibility, and financial return. Four decisions are possible: Go (advance with resources committed), No-Go (terminate the project), Hold (pause without killing it, e.g., for timing or resources), and Recycle (send the team back to rework deliverables before re-presenting). Early gates also perform screening — narrowing many ideas to a viable few."},
+{d:1,q:"A competitor has launched a low-priced clone of your mature, differentiated product. Describe how you would respond, referencing lifecycle stage and competitive strategy.",
+pts:["Recognizes maturity-stage dynamics: peak competition, commoditization pressure","Avoids reflexive price war — defends the differentiation position","Reinforce and communicate value/differentiators customers care about","Segment: consider tiered offerings (good/better/best) or a flanker product for price-sensitive segments","Manage costs to protect margin","Monitor with win/loss analysis and adjust"],
+model:"A low-cost clone at maturity is classic commoditization pressure. I would not lead with a price war — that concedes my differentiation advantage and may be unwinnable against a lower-cost rival. Instead I would first re-validate which differentiators customers actually value, and sharpen positioning and sales tools (battlecards, win/loss analysis) around them. Second, I would segment the response: keep the flagship differentiated at premium price, while considering a lower-priced tier or flanker offering to protect price-sensitive segments without eroding the core brand. Third, I would pursue cost reduction to preserve margin flexibility. Finally, I would monitor share, win/loss reasons, and churn to adjust — escalating to product enhancements if the clone closes the value gap."},
+{d:1,q:"Explain the difference between the market Product Life Cycle and the ProdBOK product lifecycle phases, and why a product manager needs both.",
+pts:["PLC = market behavior: Introduction, Growth, Maturity, Decline","ProdBOK = organizational process: Conceive, Plan, Develop, Qualify, Launch, Deliver, Retire","PLC describes what the market does; ProdBOK describes what the organization does","Gates precede each ProdBOK phase","PM needs both: PLC to choose market strategy per stage; ProdBOK to manage internal decisions and investment"],
+model:"The market PLC — Introduction, Growth, Maturity, Decline — describes how sales, competition, and profits behave in the market over time. The ProdBOK lifecycle — Conceive, Plan, Develop, Qualify, Launch, Deliver, Retire — describes the phases through which an organization manages a product, each preceded by a cross-functional gate. They answer different questions: the PLC tells the PM what strategy the market context demands (build awareness in Introduction, scale in Growth, differentiate and cut costs in Maturity, harvest or exit in Decline), while ProdBOK governs internal decision-making and incremental investment from idea through retirement. A PM needs both lenses simultaneously: ProdBOK to run the process, the PLC to choose the right strategy inside it."},
+{d:1,q:"Describe a responsible end-of-life (EOL) process for a product with a large installed customer base.",
+pts:["Decision justified by criteria: declining sales, negative margins, strategic misalignment","Early, clear customer notification with dates (end of sale, end of support)","Migration path to replacement product or alternative","Phased support wind-down honoring contractual obligations","Internal coordination: sales, support, channel, inventory rundown","Documentation archiving and lessons learned"],
+model:"First, validate the retirement decision against explicit criteria — sustained decline, negative contribution margin, or strategic misalignment — and get gate approval. Then plan around the installed base: announce early with unambiguous milestones (end-of-sale, end-of-maintenance, end-of-support dates), honoring all contractual commitments. Provide a migration path — a successor product, upgrade incentives, or validated third-party alternatives — and support customers through the transition. Coordinate internally: prepare support and sales with talking points, run down inventory, notify channel partners, and manage final orders. Finally, archive documentation and capture lessons learned. The goals are protecting customer trust and brand reputation while ending unprofitable investment in an orderly way — never a silent discontinuation."},
+{d:1,q:"Your CEO asks why the company should keep funding a low-growth product with high market share instead of putting everything into new products. Answer using portfolio management concepts.",
+pts:["Identifies the product as a BCG Cash Cow (high share, low growth)","Cash cows fund Stars and Question Marks — the growth engine's financing","Balanced portfolio needs products at different lifecycle stages","Manage the cow for efficiency: minimal investment, maximize cash","Cutting it entirely risks share collapse and loses the funding source"],
+model:"That product is our Cash Cow: high share in a low-growth market. In portfolio terms, cash cows are the financing engine of the portfolio — their profits fund the Stars we're scaling and the Question Marks we're betting on. A balanced portfolio deliberately holds products at different lifecycle stages so mature products pay for the pipeline. The right move isn't defunding it entirely — that invites share erosion and kills the cash stream — but managing it for efficiency: minimal defensive investment, cost discipline, and price/packaging optimization, with the surplus explicitly redirected to growth products. I'd formalize that through regular portfolio reviews with invest/maintain/harvest/divest decisions per product."},
+{d:2,q:"Explain the difference between primary and secondary research, and between qualitative and quantitative methods. Describe when a PM should use each.",
+pts:["Primary = new data collected directly (surveys, interviews, focus groups, ethnography)","Secondary = existing sources (analyst reports, government data, filings)","Qualitative = small-n discovery and insight; quantitative = large-n validation and measurement","Best-practice sequence: secondary first (cheap), then qual to discover, then quant to validate/size","Match method to decision: discovery vs. measurement"],
+model:"Primary research collects new data directly from the market — surveys, interviews, focus groups, ethnography, usability tests. Secondary research uses data that already exists: analyst reports, government statistics, competitor filings. Qualitative methods (interviews, ethnography) use small samples to discover needs, language, and context; quantitative methods (surveys, conjoint) use large samples to validate and measure with statistical confidence. A PM should sequence them: start with secondary research because it's fast and cheap and frames the problem; use qualitative research to discover unmet needs and generate hypotheses; then use quantitative research to validate those hypotheses and size them. The choice always follows the decision at hand — exploration demands qualitative; commitment of resources demands quantitative validation."},
+{d:2,q:"You must build the business case for a new product. List its key components and explain the role of NPV, ROI, and payback period in the recommendation.",
+pts:["Components: executive summary, problem/opportunity, market analysis, competitive analysis, proposed solution, financial analysis, risk assessment, recommendation","NPV = PV of future cash flows minus investment; positive NPV creates value","ROI = net profit ÷ investment; efficiency of capital","Payback = time to recoup investment; liquidity/risk lens","Financials are necessary but not sufficient — strategic fit and risk still matter"],
+model:"A business case contains an executive summary, problem/opportunity statement, market analysis, competitive analysis, the proposed solution, financial analysis, risk assessment with mitigations, and a recommendation. The financial trio each answers a different question. NPV discounts projected cash flows and subtracts the investment: positive NPV means the product creates value in absolute terms, making it the primary go/no-go signal. ROI (net profit over investment) expresses capital efficiency, useful for comparing projects of different sizes. Payback period shows how quickly the investment is recovered — a liquidity and risk measure attractive when the future is uncertain. I would present all three, because a positive-NPV project can still be wrong if it misfits strategy, exceeds risk tolerance, or crowds out better alternatives."},
+{d:2,q:"Explain the four characteristics that distinguish services from physical goods, with an example of how each affects product management decisions.",
+pts:["Intangibility — can't inspect before purchase → reduce perceived risk (trials, testimonials, tangible cues)","Inseparability — produced and consumed simultaneously → provider/customer experience design matters","Variability/heterogeneity — quality varies by person and time → training, standards, process control","Perishability — capacity can't be inventoried → demand management, pricing (off-peak), capacity planning"],
+model:"Services differ from goods in four ways. Intangibility: customers can't see or try the service beforehand, so PMs must reduce perceived risk with trials, guarantees, testimonials, and tangible evidence. Inseparability: the service is produced and consumed simultaneously, often with the customer present, so the delivery experience and provider interaction are part of the product design itself. Variability: quality differs across providers and occasions, so PMs invest in training, standardization, scripts, and quality processes to narrow the spread. Perishability: unused capacity — an empty seat, an idle consultant hour — is lost forever, so PMs manage demand with reservations, off-peak pricing, and capacity planning. Together these push service PMs toward the extended 7P mix, adding People, Process, and Physical Evidence."},
+{d:2,q:"Describe the purpose of the MRD and the PRD, how they relate, and what goes wrong when teams skip the MRD.",
+pts:["MRD captures market/customer needs in problem language","PRD translates needs into product features and specifications","Flow: MRD → PRD → functional/design specs","Skipping MRD → solution built on assumptions; features without validated needs","Traceability: every requirement should trace to a market need"],
+model:"The Market Requirements Document captures what the market needs — customer problems, segments, and priorities, written in the customer's problem language. The Product Requirements Document translates those needs into what the product will do: features, capabilities, and specifications, which then drive functional and design specs. The MRD answers 'what problem, for whom, and why it matters'; the PRD answers 'what we will build to solve it.' When teams skip the MRD, the PRD becomes a feature list grounded in internal assumptions rather than validated needs — the classic cause of well-engineered products nobody buys. Requirements lose traceability, prioritization becomes opinion-driven, and marketing later struggles to position a product that was never anchored to a market problem."},
+{d:3,q:"Product managers are often described as needing 'influence without authority.' Explain what this means and describe three concrete ways a PM builds it.",
+pts:["PM is accountable for product success but doesn't manage the contributing functions","'Internal CEO' metaphor — end-to-end ownership without formal power","Build trust through reliability: deliver on commitments, transparent communication","Use evidence: customer data and research to depersonalize decisions","Shared goals / agreed prioritization criteria and decision forums (RACI, gates)"],
+model:"PMs are accountable for a product's success but hold no formal authority over the engineers, marketers, salespeople, and support staff whose work determines it — hence the 'internal CEO' metaphor: full ownership, no direct reports. Influence must substitute for authority. Three ways to build it: first, reliability — consistently delivering on commitments and communicating transparently, which compounds into trust. Second, evidence — bringing validated customer data and research to decisions, so debates resolve on facts rather than rank or volume. Third, shared structure — establishing agreed goals, prioritization criteria, and decision rights (RACI charts, gate forums) in advance, so decisions are governed by criteria everyone endorsed rather than ad-hoc power. Escalation stays available, but as a deliberate last resort presented with options."},
+{d:3,q:"Compare the four organizational structures for product management and name the primary weakness of each.",
+pts:["Functional: strong functional depth; weak product ownership, conflicts resolved by discussion/escalation","Product-centric: clear ownership; duplicated resources across product teams","Market/customer-based: strong customer focus; PM lacks full product authority","Matrix: combines functional + product; coordination without authority, high conflict potential"],
+model:"Functional organizations group people by discipline (engineering, marketing); they build deep functional skill cheaply, but no one truly owns the product end-to-end, and cross-functional conflicts resolve only through discussion or escalation. Product-centric organizations give the PM full responsibility for specific products — clear ownership and focus — but risk duplicating functions across product teams. Market or customer organizations align around segments, producing strong customer knowledge across the product line, but the PM lacks full authority over product decisions. Matrix organizations overlay product coordination on functional reporting: flexible and resource-efficient, but they demand constant coordination without authority, creating high potential for conflict and slow decisions. Most PMs operate in some matrix variant, which is why influence skills are core to the role."},
+{d:3,q:"Your launch requires readiness from sales, support, marketing, and operations. Describe how you would organize and govern that cross-functional effort.",
+pts:["Cross-functional launch plan with explicit readiness criteria per function","RACI: one Accountable owner per workstream","Stakeholder mapping and tailored communication cadence","Launch gate review verifying readiness before go","Risk tracking and escalation path with options"],
+model:"I would run launch as a governed cross-functional program. First, build a launch plan that defines readiness criteria per function — sales trained and equipped, support staffed with runbooks, marketing assets and channels live, operations able to fulfill. Second, assign RACI for every workstream with exactly one Accountable owner each, so nothing falls between functions. Third, map stakeholders by influence and interest and set a communication cadence — weekly readiness reviews with a visible dashboard. Fourth, treat the launch gate as a real decision: cross-functional leaders verify readiness evidence before Go, with Hold or Recycle available if criteria aren't met. Finally, maintain a risk log with owners and an escalation path, escalating deliberately with options rather than problems."},
+{d:4,q:"Compare Waterfall and Agile development. When is each appropriate, and how can Stage-Gate and Agile coexist?",
+pts:["Waterfall: sequential phases, heavy upfront documentation; best for stable requirements, regulated, hardware","Weakness: inflexible to changing requirements","Agile: iterative sprints, continuous feedback, just-enough documentation; best for software/fast-changing markets","Hybrid: gates govern investment decisions; Agile runs execution inside stages (e.g., Develop)"],
+model:"Waterfall proceeds sequentially — requirements, design, development, test, deploy — freezing each phase before the next. It suits stable requirements, regulated or safety-critical domains, and hardware where late change is prohibitively expensive; its weakness is inflexibility when requirements evolve. Agile delivers iteratively in short sprints with continuous customer feedback, self-organizing cross-functional teams, and just-in-time documentation; it suits software and fast-moving markets, trading upfront predictability for adaptability. They are not mutually exclusive: a common hybrid keeps Stage-Gate as the investment governance layer — gates still decide whether to fund the next phase — while the Develop stage internally runs Agile sprints. The business controls risk through gates; the team retains iteration speed between them."},
+{d:4,q:"Explain the MVP concept and the Build-Measure-Learn loop, including what a 'pivot' is.",
+pts:["MVP = smallest version that delivers value and enables validated learning","Purpose: test riskiest assumptions before full investment","Build-Measure-Learn: build MVP → measure real behavior → learn/decide","Pivot = structured strategy change based on validated learning, retaining what works","Contrast with 'launch big and hope'"],
+model:"A Minimum Viable Product is the smallest version of a product that delivers real value and generates validated learning about the riskiest assumptions — demand, willingness to pay, usage behavior — before full investment. It anchors the Lean Startup Build-Measure-Learn loop: build the MVP, measure how real users actually behave (not what they say), and learn whether the underlying hypothesis held. The loop then repeats: persevere and extend if validated, or pivot if not. A pivot is a structured change in strategy — a new customer segment, problem, channel, or revenue model — that retains the validated elements while abandoning the invalidated ones. The discipline replaces 'build everything and hope' with incremental, evidence-based commitment, philosophically similar to what gates do at larger scale."},
+{d:5,q:"Use Porter's Five Forces to explain why an attractive-looking market might still be unprofitable to enter.",
+pts:["Names the five forces: rivalry, new entrants, substitutes, buyer power, supplier power","High rivalry erodes margins through price competition","Low entry barriers mean success attracts copycats","Substitutes cap prices even without direct competitors","Powerful buyers or suppliers capture the value the market creates"],
+model:"Market size and growth say nothing about who captures the value — industry structure does. Porter's Five Forces explain why: intense competitive rivalry drives price wars that erode everyone's margins. Weak barriers to entry mean any early profits attract new entrants who compete them away. Substitutes — different products serving the same need — cap what customers will pay even where direct competition is thin. Powerful buyers (concentrated, price-sensitive, low switching costs) negotiate margins down, and powerful suppliers (few sources of a critical input) negotiate costs up. A large, growing market with low entry barriers, strong substitutes, and concentrated buyers can therefore be structurally unprofitable, while a smaller market with favorable forces yields durable returns. Entry analysis must assess structure, not just size."},
+{d:5,q:"Explain the Ansoff Matrix and rank its four strategies by risk, with an example of each.",
+pts:["Axes: existing/new products × existing/new markets","Market Penetration (existing/existing) — lowest risk — e.g., promotions to grow share","Market Development (existing product/new market) — e.g., geographic expansion","Product Development (new product/existing market) — e.g., new offering for current customers","Diversification (new/new) — highest risk — e.g., entering an unrelated business","Risk rises with each new dimension of unfamiliarity"],
+model:"The Ansoff Matrix maps growth strategies on two axes: products (existing vs. new) and markets (existing vs. new). Market Penetration — existing products in existing markets — is lowest risk: win share through promotion, pricing, or usage frequency, like a streaming service converting free users. Market Development takes existing products to new markets, such as expanding a proven SaaS product to Europe; risk comes from unfamiliar customers and channels. Product Development creates new products for existing markets — a bank launching insurance to current customers; risk lies in new-product execution. Diversification — new products for new markets, like a retailer entering cloud computing — is highest risk because both dimensions are unfamiliar. Risk rises with each dimension of newness, so evidence requirements and gate scrutiny should rise correspondingly."},
+{d:6,q:"Your executive team asks how you'll measure post-launch product health. Propose a metric set and justify each choice.",
+pts:["Adoption/activation — is the market actually taking it up (feature adoption, DAU/MAU)","Retention/churn — is delivered value sustained","NPS or satisfaction — customer sentiment/loyalty","Commercial: revenue vs. business-case plan, gross margin, CAC vs. LTV (target ~3:1)","Compare actuals to business-case projections — post-launch review discipline"],
+model:"I would track four layers. Adoption: new customer/user growth and activation, plus DAU/MAU for engagement — proof the market is actually taking the product up. Retention: churn and retention rates, because keeping customers proves sustained value delivery and drives lifetime economics. Sentiment: NPS (promoters minus detractors) as a loyalty leading indicator, supplemented by support volume trends. Commercial health: revenue against the business-case projection, gross margin, and unit economics — CAC versus LTV with roughly a 3:1 LTV:CAC target — so growth is efficient, not bought. Every metric is compared to the business case we got funded on, through scheduled post-launch reviews; that closes the loop between the promises made at the gates and the product's real performance, and triggers corrective action early."}
+];
+/* ================= CPM Exam Coach — app logic ================= */
+const DOMS={1:["Product Lifecycle Management",40],2:["Marketing Research, Business Plans & Docs",20],3:["Teams, People & Org Issues",15],4:["NPD Methodology",10],5:["Strategy",10],6:["Tools & Measurements",5]};
+const MOD_MIX={1:12,2:6,3:5,4:3,5:3,6:1};      // 30-question module
+const FULL_MIX={1:48,2:24,3:18,4:12,5:12,6:6}; // 120-question exam
+const PASS=74;
+const LETTERS=["A","B","C","D"];
+
+/* ---------- persistent progress ---------- */
+let P;
+try{P=JSON.parse(localStorage.getItem("cpmCoachV1"))||{}}catch(e){P={}}
+P.q=P.q||{}; P.f=P.f||{}; P.exams=P.exams||[]; P.e=P.e||{};
+function save(){try{localStorage.setItem("cpmCoachV1",JSON.stringify(P))}catch(e){}}
+function qs(i){return P.q[i]||(P.q[i]={s:0,r:0,w:0})}
+function record(i,correct){const s=qs(i);s.s++;correct?s.r++:s.w++;s.last=Date.now();save();}
+function exportProgress(){
+  const blob=new Blob([JSON.stringify(P,null,1)],{type:"application/json"});
+  const a=document.createElement("a");a.href=URL.createObjectURL(blob);
+  a.download="cpm_coach_progress_"+new Date().toISOString().slice(0,10)+".json";a.click();
+}
+function importProgress(ev){
+  const f=ev.target.files[0];if(!f)return;
+  const r=new FileReader();
+  r.onload=()=>{try{const j=JSON.parse(r.result);if(!j.q&&!j.f&&!j.exams)throw 0;localStorage.setItem("cpmCoachV1",JSON.stringify(j));location.reload()}catch(e){alert("That file doesn't look like a CPM Coach progress backup.")}};
+  r.readAsText(f);
+}
+function domStats(d){let seen=0,r=0,w=0,total=0;QB.forEach((q,i)=>{if(q.d!==d)return;total++;const s=P.q[i];if(s&&s.s){seen++;r+=s.r;w+=s.w}});return{seen,total,r,w,acc:(r+w)?r/(r+w):null}}
+function readiness(){let num=0,den=0;for(const d in DOMS){const st=domStats(+d);if(st.acc===null)continue;const cov=Math.min(1,st.seen/Math.max(6,st.total*0.3));num+=DOMS[d][1]*st.acc*cov;den+=DOMS[d][1]}return den?num/den*100:null}
+
+/* ---------- voice ---------- */
+let voiceOut=false,voiceIn=false,rec=null,listening=false,voiceCtx=null;
+const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+function toggleVoice(which){
+  if(which==="out"){voiceOut=!voiceOut;if(!voiceOut)speechSynthesis.cancel();}
+  else{
+    if(!SR&&!voiceIn){alert("Voice input isn't supported in this browser. Chrome, Edge, or Safari work best.");return}
+    voiceIn=!voiceIn;
+    if(voiceIn&&!voiceOut){voiceOut=true}
+    if(voiceIn)startListening();else stopListening();
+  }
+  document.getElementById("togOut").classList.toggle("on",voiceOut);
+  document.getElementById("togIn").classList.toggle("on",voiceIn);
+}
+function speak(text,cb){
+  if(!voiceOut){cb&&cb();return}
+  speechSynthesis.cancel();
+  const u=new SpeechSynthesisUtterance(text);
+  u.rate=1.04;u.onend=()=>cb&&cb();u.onerror=()=>cb&&cb();
+  speechSynthesis.speak(u);
+}
+function micUI(live,msg){const m=document.getElementById("mic");if(!m)return;m.classList.toggle("live",live);m.querySelector("span").textContent=msg||(live?"Listening… say A, B, C, or D":"Mic idle");}
+function startListening(){
+  if(!SR||!voiceIn||listening)return;
+  rec=new SR();rec.lang="en-US";rec.continuous=false;rec.interimResults=false;
+  rec.onresult=e=>{const t=e.results[0][0].transcript.toLowerCase().trim();handleVoice(t)};
+  rec.onend=()=>{listening=false;micUI(false);if(voiceIn)setTimeout(()=>{if(voiceIn&&!listening)startListening()},350)};
+  rec.onerror=e=>{listening=false;if(e.error==="not-allowed"){voiceIn=false;document.getElementById("togIn").classList.remove("on");micUI(false,"Mic blocked — allow microphone access and try again")}};
+  try{rec.start();listening=true;micUI(true)}catch(e){listening=false}
+}
+function stopListening(){if(rec){try{rec.onend=null;rec.stop()}catch(e){}}listening=false;micUI(false,"Voice answers off")}
+function parseChoice(t,n){
+  const words=" "+t.replace(/[^a-z0-9 ]/g," ")+" ";
+  const map=[[" a "," ay "," option a "," answer a "," one "," 1 "],[" b "," be "," bee "," option b "," answer b "," two "," 2 "],[" c "," see "," sea "," option c "," answer c "," three "," 3 "],[" d "," dee "," option d "," answer d "," four "," 4 "]];
+  for(let i=0;i<Math.min(4,n);i++){if(map[i].some(k=>words.includes(k)))return i}
+  if(n===2){if(words.includes(" true "))return 0;if(words.includes(" false "))return 1}
+  return -1;
+}
+function handleVoice(t){
+  if(!S)return;
+  if(/\b(repeat|again|say that again)\b/.test(t)){readCurrent();return}
+  if(S.phase==="feedback"){
+    if(/\b(next|continue|go on|okay|ok)\b/.test(t)){nextQ();return}
+    if(/\b(explain|why)\b/.test(t)){const q=QB[S.list[S.i]];speak(q.x);return}
+  }
+  if(S.phase==="question"){
+    if(/\b(skip|pass)\b/.test(t)&&S.mode==="exam"){answer(-1);return}
+    const c=parseChoice(t,QB[S.list[S.i]].c.length);
+    if(c>=0){pick(c);return}
+    micUI(listening,'Heard "'+t+'" — say A, B, C, or D');
+  }
+}
+
+/* ---------- session engine ---------- */
+let S=null,timerInt=null;
+function startSession(o){
+  S={mode:o.mode,list:o.list,i:0,answers:[],phase:"question",secs:o.secs||0,label:o.label};
+  if(timerInt)clearInterval(timerInt);
+  if(S.secs>0){timerInt=setInterval(()=>{S.secs--;const t=document.getElementById("tmr");if(t){t.textContent=fmt(S.secs);t.classList.toggle("low",S.secs<180)}if(S.secs<=0){clearInterval(timerInt);finishSession(true)}},1000)}
+  renderQ();
+}
+function fmt(s){return Math.floor(s/60)+":"+String(s%60).padStart(2,"0")}
+function renderQ(){
+  const gi=S.list[S.i],q=QB[gi];
+  let perm=q.c.map((_,ci)=>ci);
+  const isTF=q.c.length===2&&q.c[0]==="True";
+  if(!isTF)shuffle(perm);            // shuffle answer positions every render
+  S.perm=perm;
+  const opts=perm.map((oi,ci)=>'<button class="opt" data-i="'+ci+'" onclick="pick('+ci+')"><span class="l">'+LETTERS[ci]+'</span><span>'+esc(q.c[oi])+"</span></button>").join("");
+  view(`<span class="crumb" onclick="confirmExit()">← End session</span>
+  <div class="card">
+    <div class="meta"><span>${S.label} · Question ${S.i+1} of ${S.list.length}</span>
+    <span>${DOMS[q.d][0]}</span>${S.secs>0?'<span class="timer" id="tmr">'+fmt(S.secs)+"</span>":""}</div>
+    <div class="bar"><i style="width:${(S.i)/S.list.length*100}%"></i></div>
+    <div class="q">${esc(q.q)}</div>${opts}
+    <div class="mic" id="mic"><span class="dot"></span><span></span></div>
+    <div class="small">Keyboard: <kbd>A</kbd>–<kbd>D</kbd> or <kbd>1</kbd>–<kbd>4</kbd> to answer${S.mode!=="exam"?", <kbd>Enter</kbd> for next":""} · Voice: say the letter, or “repeat”</div>
+  </div>`);
+  S.phase="question";
+  micUI(listening);
+  readCurrent();
+}
+function readCurrent(){
+  const q=QB[S.list[S.i]];
+  if(S.phase==="question"){
+    let t="Question "+(S.i+1)+". "+q.q+" ... ";
+    S.perm.forEach((oi,i)=>{t+="Option "+LETTERS[i]+": "+q.c[oi]+". "});
+    speak(t);
+  }else{
+    const g=S.answers[S.i];const q2=QB[S.list[S.i]];
+    speak((g===q2.a?"Correct. ":"Incorrect. The answer is "+LETTERS[S.perm.indexOf(q2.a)]+". ")+q2.x+" ... Say next to continue.");
+  }
+}
+function pick(di){ // di = displayed position; map to original option index
+  if(!S||S.phase!=="question"||!S.perm||di>=S.perm.length)return;
+  answer(S.perm[di]);
+}
+function answer(ci){
+  if(!S||S.phase!=="question")return;
+  const gi=S.list[S.i],q=QB[gi];
+  S.answers[S.i]=ci;
+  if(S.mode==="exam"){
+    speechSynthesis.cancel();
+    if(S.i+1<S.list.length){S.i++;renderQ()}else finishSession(false);
+    return;
+  }
+  record(gi,ci===q.a);
+  S.phase="feedback";
+  document.querySelectorAll(".opt").forEach(b=>{
+    const bi=+b.dataset.i,oi=S.perm[bi];b.disabled=true;
+    if(oi===q.a)b.classList.add("right");
+    else if(oi===ci)b.classList.add("wrong");
+  });
+  const good=ci===q.a;
+  const div=document.createElement("div");
+  div.className="expl "+(good?"good":"poor");
+  div.innerHTML="<b>"+(good?"✓ Correct":"✗ Incorrect — answer is "+LETTERS[S.perm.indexOf(q.a)])+".</b> "+esc(q.x);
+  const card=document.querySelector(".card");
+  card.insertBefore(div,document.getElementById("mic"));
+  const btn=document.createElement("button");
+  btn.className="btn";btn.textContent=S.i+1<S.list.length?"Next question →":"Finish";
+  btn.onclick=nextQ;card.appendChild(btn);
+  readCurrent();
+}
+function nextQ(){
+  if(!S||S.phase!=="feedback")return;
+  speechSynthesis.cancel();
+  if(S.i+1<S.list.length){S.i++;renderQ()}else finishSession(false);
+}
+function confirmExit(){
+  if(S&&S.answers.filter(a=>a!==undefined).length>0&&S.mode==="exam"){if(!confirm("End the exam now? Answered questions will be scored."))return;finishSession(true);return}
+  endSession();go("home");
+}
+function endSession(){S=null;if(timerInt)clearInterval(timerInt);speechSynthesis.cancel()}
+function finishSession(timedOut){
+  if(timerInt)clearInterval(timerInt);
+  const res={label:S.label,mode:S.mode,total:S.list.length,right:0,byDom:{},wrong:[]};
+  S.list.forEach((gi,ix)=>{
+    const q=QB[gi],g=S.answers[ix];
+    const correct=g===q.a;
+    if(S.mode==="exam")record(gi,correct);
+    res.byDom[q.d]=res.byDom[q.d]||{r:0,t:0};
+    res.byDom[q.d].t++;
+    if(correct){res.right++;res.byDom[q.d].r++}
+    else res.wrong.push({gi,g});
+  });
+  if(S.mode==="exam"){P.exams.push({when:Date.now(),label:S.label,pct:Math.round(res.right/res.total*100),right:res.right,total:res.total});save()}
+  const pct=Math.round(res.right/res.total*100);
+  const pass=pct>=PASS;
+  endSession();
+  let rows="";
+  for(const d in res.byDom){const b=res.byDom[d];rows+="<tr><td>"+DOMS[d][0]+"</td><td>"+b.r+"/"+b.t+"</td><td>"+Math.round(b.r/b.t*100)+"%</td></tr>"}
+  let wrongHtml="";
+  if(res.wrong.length){
+    wrongHtml='<div class="card"><h3>Review your misses</h3>'+res.wrong.map(w=>{
+      const q=QB[w.gi];
+      return '<div style="margin:12px 0;padding-bottom:10px;border-bottom:1px solid var(--line)"><b>'+esc(q.q)+"</b><br><span style='color:var(--bad)'>Your answer: "+(w.g===undefined||w.g<0?"— (skipped)":esc(q.c[w.g]))+"</span><br><span style='color:var(--ok)'>Correct: "+esc(q.c[q.a])+"</span><br><span class='sub'>"+esc(q.x)+"</span></div>";
+    }).join("")+'<button class="btn2" onclick="drillMissed()">Drill these again</button></div>';
+  }
+  lastMissed=res.wrong.map(w=>w.gi);
+  view(`<div class="card" style="text-align:center">
+    <div class="pill">${res.label}${timedOut&&S===null?"":""}</div>
+    <div class="score ${pass?"pass":"fail"}">${pct}%</div>
+    <p>${res.right} of ${res.total} correct — ${pass?"that's a passing score (need "+PASS+"%) 🎉":"below the "+PASS+"% pass line. Keep drilling."}</p>
+    <table><tr><th>Domain</th><th>Score</th><th>%</th></tr>${rows}</table>
+    <div class="btnrow" style="justify-content:center"><button class="btn" onclick="go('home')">Dashboard</button><button class="btn2" onclick="go('practice')">Practice more</button></div>
+  </div>${wrongHtml}`);
+  speak(pass?"You scored "+pct+" percent. That's a pass!":"You scored "+pct+" percent. The pass mark is 74. Let's review your misses.");
+}
+let lastMissed=[];
+function drillMissed(){if(!lastMissed.length)return;startSession({mode:"practice",list:shuffle(lastMissed.slice()),label:"Missed-question drill"})}
+
+/* ---------- adaptive selection ---------- */
+function weightFor(i){
+  const q=QB[i],s=P.q[i];
+  const dst=domStats(q.d);
+  const domWeak=dst.acc===null?0.5:(1-dst.acc);
+  let w=1+2.5*domWeak;
+  if(!s||!s.s)w+=1.6;                 // unseen bonus
+  else{
+    const wr=s.w/(s.r+s.w);w+=3*wr;   // hammer misses
+    if(s.r>=2&&!s.w)w*=0.35;          // mastered = lower volume, never zero
+    if(s.last){const days=(Date.now()-s.last)/864e5;w+=Math.min(1.4,0.3*Math.sqrt(days));} // spaced repetition: staleness pulls items back
+  }
+  return Math.max(w,0.2);             // floor: strong areas stay in rotation
+}
+function smartPick(n,dom){
+  const pool=QB.map((q,i)=>i).filter(i=>!dom||QB[i].d===dom);
+  const items=pool.map(i=>({i,w:weightFor(i)}));
+  const out=[];
+  while(out.length<n&&items.length){
+    let tot=items.reduce((a,b)=>a+b.w,0),r=Math.random()*tot,k=0;
+    for(;k<items.length;k++){r-=items[k].w;if(r<=0)break}
+    k=Math.min(k,items.length-1);
+    out.push(items[k].i);items.splice(k,1);
+  }
+  return out;
+}
+function examList(mix){
+  let list=[];
+  for(const d in mix){
+    const pool=shuffle(QB.map((q,i)=>i).filter(i=>QB[i].d===+d));
+    list=list.concat(pool.slice(0,mix[d]));
+  }
+  return shuffle(list);
+}
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function esc(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")}
+function view(h){document.getElementById("view").innerHTML=h;window.scrollTo(0,0)}
+
+/* ---------- flashcards ---------- */
+let F=null;
+function startFlash(dom){
+  const pool=FLASH.map((c,i)=>i).filter(i=>!dom||FLASH[i].d===dom);
+  const weighted=pool.map(i=>({i,w:1+(P.f[i]&&P.f[i].d?3*P.f[i].d/((P.f[i].k||0)+P.f[i].d):0)+((P.f[i]&&(P.f[i].k||P.f[i].d))?0:1)}));
+  const list=[];
+  while(list.length<Math.min(20,weighted.length)&&weighted.length){
+    let tot=weighted.reduce((a,b)=>a+b.w,0),r=Math.random()*tot,k=0;
+    for(;k<weighted.length;k++){r-=weighted[k].w;if(r<=0)break}
+    k=Math.min(k,weighted.length-1);
+    list.push(weighted[k].i);weighted.splice(k,1);
+  }
+  F={list,i:0,flipped:false};renderFlash();
+}
+function renderFlash(){
+  const c=FLASH[F.list[F.i]];
+  view(`<span class="crumb" onclick="F=null;go('flash')">← Flashcards</span>
+  <div class="card" style="padding:14px"><div class="meta"><span>Card ${F.i+1} of ${F.list.length}</span><span>${DOMS[c.d][0]}</span></div></div>
+  <div class="fc" onclick="flipCard()">
+    <div class="f">${esc(c.f)}</div>
+    ${F.flipped?'<div class="b">'+esc(c.b)+"</div>":'<div class="hint">tap / space to reveal</div>'}
+  </div>
+  ${F.flipped?'<div class="btnrow" style="justify-content:center"><button class="btn2" style="background:var(--badbg);color:var(--bad)" onclick="gradeCard(false)">✗ Didn&#39;t know</button><button class="btn2" style="background:var(--okbg);color:var(--ok)" onclick="gradeCard(true)">✓ Knew it</button></div>':""}
+  <div class="mic" id="mic"><span class="dot"></span><span></span></div>`);
+  micUI(listening);
+  speak(c.f+(F.flipped?" ... "+c.b:""));
+}
+function flipCard(){F.flipped=!F.flipped;renderFlash()}
+function gradeCard(knew){
+  const i=F.list[F.i];
+  P.f[i]=P.f[i]||{k:0,d:0};knew?P.f[i].k++:P.f[i].d++;save();
+  if(F.i+1<F.list.length){F.i++;F.flipped=false;renderFlash()}
+  else{const done=F.list.length;F=null;view('<div class="card" style="text-align:center"><h2>Deck complete 🎴</h2><p class="sub">'+done+' cards reviewed. Weak cards will come back more often.</p><div class="btnrow" style="justify-content:center"><button class="btn" onclick="go(\'flash\')">Another deck</button><button class="btn2" onclick="go(\'home\')">Dashboard</button></div></div>')}
+}
+
+/* ---------- essay mode ---------- */
+let dict=null,dictOn=false;
+function stopDictate(){
+  dictOn=false;
+  if(dict){try{dict.onend=null;dict.stop()}catch(e){}}
+  const b=document.getElementById("dictBtn");
+  if(b){b.textContent="🎙️ Dictate my answer";b.classList.remove("btn");b.classList.add("btn2")}
+}
+function toggleDictate(){
+  if(dictOn){stopDictate();return}
+  if(!SR){alert("Dictation isn't supported in this browser. Chrome, Edge, or Safari work best.");return}
+  if(voiceIn)toggleVoice("in"); // can't run two recognizers at once
+  dict=new SR();dict.lang="en-US";dict.continuous=true;dict.interimResults=false;
+  dict.onresult=e=>{
+    let t="";
+    for(let k=e.resultIndex;k<e.results.length;k++)if(e.results[k].isFinal)t+=e.results[k][0].transcript+" ";
+    const ta=document.getElementById("essayTa");
+    if(ta&&t.trim())ta.value=(ta.value.trim()+" "+t.trim()).trim();
+  };
+  dict.onend=()=>{if(dictOn){try{dict.start()}catch(e){}}};
+  dict.onerror=e=>{if(e.error==="not-allowed"){stopDictate();alert("Microphone blocked — allow mic access and try again.")}};
+  dictOn=true;
+  try{dict.start()}catch(e){dictOn=false;return}
+  const b=document.getElementById("dictBtn");
+  if(b){b.textContent="⏹ Stop dictating";b.classList.remove("btn2");b.classList.add("btn")}
+}
+function essayList(){
+  let items="";
+  ESSAYS.forEach((e,i)=>{
+    const st=P.e[i];
+    const status=st&&st.pct!==undefined?'<b style="color:'+(st.pct>=70?"var(--ok)":"var(--warn)")+'">self-scored '+st.pct+"%</b>":"not attempted";
+    items+='<div class="mode" onclick="renderEssay('+i+')"><b>'+DOMS[e.d][0]+'</b><p>'+esc(e.q.slice(0,110))+'…</p><p style="margin-top:6px">'+status+"</p></div>";
+  });
+  view('<span class="crumb" onclick="go(\'home\')">← Dashboard</span><div class="card"><h2>Essay practice</h2><p class="sub">The real exam includes short essay questions. Write or dictate your answer, then grade yourself against the key points. Aim to hit most key points in 5–8 sentences.</p></div><div class="grid">'+items+"</div>");
+}
+function renderEssay(i){
+  const e=ESSAYS[i];
+  view(`<span class="crumb" onclick="stopDictate();go('essay')">← Essay list</span>
+  <div class="card"><div class="pill">${DOMS[e.d][0]} · Essay</div>
+  <div class="q">${esc(e.q)}</div>
+  <textarea id="essayTa" style="width:100%;min-height:180px;font:inherit;padding:12px;border:1.5px solid var(--line);border-radius:12px;resize:vertical" placeholder="Write your answer here, or hit Dictate and speak it…"></textarea>
+  <div class="btnrow">
+    <button class="btn2" id="dictBtn" onclick="toggleDictate()">🎙️ Dictate my answer</button>
+    <button class="btn" onclick="gradeEssay(${i})">I'm done — show model answer</button>
+  </div>
+  <div class="small">Timed-exam tip: on the real exam, plan ~1 minute outlining key points before writing.</div></div>`);
+  speak("Essay question. "+e.q);
+}
+function gradeEssay(i){
+  stopDictate();speechSynthesis.cancel();
+  const e=ESSAYS[i];
+  const yours=(document.getElementById("essayTa")||{}).value||"";
+  const checks=e.pts.map((p,pi)=>'<label style="display:flex;gap:9px;align-items:flex-start;margin:7px 0;font-size:14px;cursor:pointer"><input type="checkbox" class="ptck" style="margin-top:4px"> <span>'+esc(p)+"</span></label>").join("");
+  view(`<span class="crumb" onclick="go('essay')">← Essay list</span>
+  <div class="card"><div class="pill">${DOMS[e.d][0]} · Self-grade</div>
+  <div class="q">${esc(e.q)}</div>
+  ${yours.trim()?'<h3>Your answer</h3><div class="expl" style="background:var(--bg);border:1px solid var(--line)">'+esc(yours)+"</div>":'<p class="sub">(No answer captured — grade from memory of what you said.)</p>'}
+  <h3>Model answer</h3><div class="expl good">${esc(e.model)}</div>
+  <h3>Key points — check each one your answer covered</h3>${checks}
+  <div class="btnrow"><button class="btn" onclick="saveEssay(${i})">Save my score</button></div></div>`);
+}
+function saveEssay(i){
+  const boxes=[...document.querySelectorAll(".ptck")];
+  const hit=boxes.filter(b=>b.checked).length;
+  const pct=Math.round(hit/boxes.length*100);
+  P.e[i]={pct,when:Date.now()};save();
+  speak("Saved. You covered "+hit+" of "+boxes.length+" key points.");
+  essayList();
+}
+
+/* ---------- views ---------- */
+function go(where,arg){
+  endSession();F=null;stopDictate();
+  if(where==="home")return home();
+  if(where==="learn")return learn(arg);
+  if(where==="practice")return practiceSetup();
+  if(where==="exam")return examSetup();
+  if(where==="flash")return flashSetup();
+  if(where==="review")return review();
+  if(where==="essay")return essayList();
+  if(where==="sources")return sources();
+}
+function sources(){
+  view(`<span class="crumb" onclick="go('home')">← Dashboard</span>
+  <div class="card learn"><h2>Where this content comes from</h2>
+  <p class="sub">Every question was written by Claude for this tool — synthesized from the sources below, not copied. That means wording won't match the real exam, so calibrate with official material before test day.</p>
+  <h3>1. Your study guide — already studied ✓</h3>
+  <p><b>AIPMM_CPM_Study_Guide.md</b> (in this folder). The backbone of all six domains: PLC/ProdBOK phases, gates, BCG, research methods, financial formulas, org structures, 7S, Agile/Waterfall, Porter, Ansoff, KPIs. It was itself compiled from AIPMM.com, Productside, Coursera/SkillUp, Udemy, Quizlet, and SlideShare.</p>
+  <h3>2. EmpowerPM 3-Day AIPMM CPM Prep Course outline — NEW material 🆕</h3>
+  <p>An AIPMM ProdBOK®-approved prep course PDF (<a href="https://empowerpm.com/wp-content/uploads/2020/06/3Day_CPM_ExamPrepCourse.pdf" target="_blank">empowerpm.com</a>). Topics added from it that your guide did NOT cover: <b>inbound vs. outbound product management</b>, <b>product levels</b> (core/actual/augmented), <b>product line vs. mix</b> (width/depth/consistency), <b>extended 7P marketing mix</b>, <b>4Cs</b>, <b>value creation & value chain</b>, <b>commercialization</b>, <b>Six Sigma/Lean</b>, <b>Withdrawal stage</b>, <b>licensing/M&A assessment</b>, and functional/design specification documents. If a question here feels unfamiliar, it's probably from this source — review the Learn pages for domains 1–2.</p>
+  <h3>3. Exam structure & logistics</h3>
+  <p><a href="https://aipmm.com/cpm" target="_blank">aipmm.com/cpm</a> and <a href="https://productside.com/aipmm-certification/" target="_blank">Productside</a> — 120 questions, 4×30-question/30-minute modules, 74% pass, closed-book proctored, essay questions included, domain weights.</p>
+  <h3>4. The PM canon (background knowledge)</h3>
+  <p>Standard frameworks the exam draws on: Kotler (4Ps, PLC, segmentation), Porter (5 Forces, generic strategies), Ansoff, BCG/GE-McKinsey, Moore (chasm, whole product), Rogers (diffusion), Tuckman, McKinsey 7S, Lean Startup/Ries, Scrum Guide, Business Model Canvas/Osterwalder.</p>
+  <h3>Official sources NOT yet in this tool — use before exam day</h3>
+  <p>• <b>ProdBOK® Guide</b> (the book the exam is written from — via AIPMM membership/voucher)<br>• <b>Official practice exam</b>: <a href="https://www.coursera.org/learn/practice-exam-for-aipmm-certified-product-manager-cpm" target="_blank">Coursera (free to audit)</a> or <a href="https://skillup.online/courses/aipmm-cpm-practice-exam/" target="_blank">SkillUp</a><br>• Your exam voucher typically includes <b>two attempts</b> — confirm with AIPMM.</p>
+  <p class="trap">⚠ To add a new source: give it to Claude (paste text, drop a PDF in this folder, or share a link) and ask for new questions in this tool's format — they get appended to the bank without disturbing your saved progress.</p>
+  </div>`);
+}
+function home(){
+  const r=readiness();
+  let bars="";
+  for(const d in DOMS){
+    const st=domStats(+d);
+    const acc=st.acc===null?0:Math.round(st.acc*100);
+    bars+=`<div class="dstat"><b>${DOMS[d][0]}</b><span>${DOMS[d][1]}% of exam · ${st.seen}/${st.total} seen · ${st.acc===null?"—":acc+"% correct"}</span></div>
+    <div class="bar"><i style="width:${acc}%;background:${st.acc===null?"#cbd0da":acc>=74?"var(--ok)":acc>=55?"var(--warn)":"var(--bad)"}"></i></div>`;
+  }
+  const exams=P.exams.slice(-5).reverse().map(e=>"<tr><td>"+new Date(e.when).toLocaleDateString()+"</td><td>"+e.label+"</td><td>"+e.right+"/"+e.total+"</td><td><b style='color:"+(e.pct>=PASS?"var(--ok)":"var(--bad)")+"'>"+e.pct+"%</b></td></tr>").join("");
+  let readyMsg,cls;
+  if(r===null){readyMsg="No data yet — start with a Smart Drill so I can map your strengths and weaknesses.";cls="y"}
+  else if(r>=80){readyMsg="Estimated readiness: <b>"+Math.round(r)+"%</b> — you're comfortably above the 74% pass line. Confirm with a full exam simulation.";cls="g"}
+  else if(r>=68){readyMsg="Estimated readiness: <b>"+Math.round(r)+"%</b> — near the 74% pass line. Drill your weakest domains below.";cls="y"}
+  else{readyMsg="Estimated readiness: <b>"+Math.round(r)+"%</b> — below the 74% pass line. Focus on Learn + Smart Drills before simulating.";cls="r"}
+  view(`<div class="card">
+    <h2>Your exam readiness</h2>
+    <p class="sub">Pass mark: 74% (~89 of 120) · Weighted by real domain weights · PLM alone is 40% of the exam</p>
+    <div class="ready ${cls}">${readyMsg}</div>${bars}
+    ${exams?'<h3>Recent exam simulations</h3><table><tr><th>Date</th><th>Type</th><th>Score</th><th>%</th></tr>'+exams+"</table>":""}
+    <div class="btnrow">
+      <button class="btn3" onclick="exportProgress()">⬇︎ Back up progress</button>
+      <button class="btn3" onclick="document.getElementById('impFile').click()">⬆︎ Restore backup</button>
+      <input type="file" id="impFile" accept=".json" style="display:none" onchange="importProgress(event)">
+    </div>
+    <div class="small">Progress saves automatically in this browser on this computer — it survives closing and reopening indefinitely. It will NOT follow you to another browser or machine, and clearing browsing data erases it: back up to a file occasionally. · <a href="#" onclick="go('sources');return false" style="color:var(--acc)">Question sources</a> · <a href="#" onclick="if(confirm('Erase all saved progress?')){localStorage.removeItem('cpmCoachV1');location.reload()}return false" style="color:var(--mut)">Reset progress</a></div>
+  </div>
+  <div class="grid">
+    <div class="mode" onclick="startSession({mode:'practice',list:smartPick(15),label:'Smart Drill'})"><span class="ic">🎯</span><b>Smart Drill</b><p>15 adaptive questions targeting your weak areas and misses. Best daily habit.</p></div>
+    <div class="mode" onclick="go('practice')"><span class="ic">📝</span><b>Practice by domain</b><p>Untimed questions with full explanations, filtered to any domain.</p></div>
+    <div class="mode" onclick="go('exam')"><span class="ic">⏱️</span><b>Exam simulation</b><p>Timed 30-question module (30 min) or full 120-question exam (2 hrs).</p></div>
+    <div class="mode" onclick="go('essay')"><span class="ic">✍️</span><b>Essay practice</b><p>${ESSAYS.length} written/narrated questions with model answers — the real exam includes essays.</p></div>
+    <div class="mode" onclick="go('flash')"><span class="ic">🎴</span><b>Flashcards</b><p>${FLASH.length} rapid-recall cards for frameworks, formulas, and definitions.</p></div>
+    <div class="mode" onclick="go('learn')"><span class="ic">📚</span><b>Learn</b><p>Concept summaries per domain with the classic exam traps flagged.</p></div>
+    <div class="mode" onclick="go('review')"><span class="ic">🔁</span><b>Review misses</b><p>Re-drill every question you've ever gotten wrong until it sticks.</p></div>
+  </div>
+  <p class="small">Tip: turn on 🔊 + 🎙️ in the header for a hands-free voice loop — questions are read aloud and you answer by saying "A", "B", "C", or "D".</p>`);
+}
+function learn(d){
+  if(!d){
+    let items="";
+    for(const k in DOMS){const st=domStats(+k);items+='<div class="mode" onclick="go(\'learn\','+k+')"><b>'+DOMS[k][0]+'</b><p>'+CONCEPTS[k].weight+(st.acc!==null?" · currently "+Math.round(st.acc*100)+"% correct":"")+"</p></div>"}
+    view('<div class="card"><h2>Learn the material</h2><p class="sub">Six domains, ordered by exam weight. Read, then drill.</p></div><div class="grid">'+items+"</div>");
+    return;
+  }
+  const c=CONCEPTS[d];
+  view(`<span class="crumb" onclick="go('learn')">← All domains</span>
+  <div class="card learn"><div class="pill">${c.weight}</div><h2>${c.title}</h2>${c.html}
+  <div class="btnrow"><button class="btn" onclick="startSession({mode:'practice',list:smartPick(10,${d}),label:'${c.title.replace(/'/g,"\\'")} drill'})">Drill this domain →</button><button class="btn2" onclick="startFlash(${d})">Flashcards</button></div></div>`);
+}
+function practiceSetup(){
+  let chips='<div class="chip on" data-d="0" onclick="pickDom(this)">All (adaptive)</div>';
+  for(const d in DOMS)chips+='<div class="chip" data-d="'+d+'" onclick="pickDom(this)">'+DOMS[d][0]+"</div>";
+  view(`<span class="crumb" onclick="go('home')">← Dashboard</span>
+  <div class="card"><h2>Practice quiz</h2><p class="sub">Untimed, immediate feedback with explanations. Adaptive selection favors weak areas.</p>
+  <h3>Domain</h3><div class="chips" id="domChips">${chips}</div>
+  <h3>Length</h3><div class="chips" id="lenChips"><div class="chip" onclick="pickLen(this)">10</div><div class="chip on" onclick="pickLen(this)">15</div><div class="chip" onclick="pickLen(this)">25</div><div class="chip" onclick="pickLen(this)">40</div></div>
+  <div class="btnrow"><button class="btn" onclick="launchPractice()">Start practice →</button></div></div>`);
+}
+function pickDom(el){document.querySelectorAll("#domChips .chip").forEach(c=>c.classList.remove("on"));el.classList.add("on")}
+function pickLen(el){document.querySelectorAll("#lenChips .chip").forEach(c=>c.classList.remove("on"));el.classList.add("on")}
+function launchPractice(){
+  const d=+document.querySelector("#domChips .chip.on").dataset.d;
+  const n=+document.querySelector("#lenChips .chip.on").textContent;
+  startSession({mode:"practice",list:smartPick(n,d||null),label:d?DOMS[d][0]+" practice":"Adaptive practice"});
+}
+function examSetup(){
+  view(`<span class="crumb" onclick="go('home')">← Dashboard</span>
+  <div class="card"><h2>Exam simulation</h2>
+  <p class="sub">Mirrors the real CPM exam: domain-weighted questions, strict timer, no feedback until the end, 74% to pass. The real exam is 4 modules of 30 questions / 30 minutes.</p>
+  <div class="grid">
+    <div class="mode" onclick="startSession({mode:'exam',list:examList(MOD_MIX),secs:1800,label:'30-question module'})"><span class="ic">⏱️</span><b>One module</b><p>30 questions · 30 minutes — matches one real exam module.</p></div>
+    <div class="mode" onclick="startSession({mode:'exam',list:examList(FULL_MIX),secs:7200,label:'Full 120-question exam'})"><span class="ic">🏁</span><b>Full exam</b><p>120 questions · 2 hours — the complete dress rehearsal.</p></div>
+  </div></div>`);
+}
+function flashSetup(){
+  let items='<div class="mode" onclick="startFlash(null)"><b>Mixed deck</b><p>20 cards across all domains, weighted toward ones you miss.</p></div>';
+  for(const d in DOMS){const n=FLASH.filter(c=>c.d===+d).length;items+='<div class="mode" onclick="startFlash('+d+')"><b>'+DOMS[d][0]+"</b><p>"+n+" cards</p></div>"}
+  view('<span class="crumb" onclick="go(\'home\')">← Dashboard</span><div class="card"><h2>Flashcards</h2><p class="sub">Tap to flip, then grade yourself honestly — "didn\'t know" cards return more often.</p></div><div class="grid">'+items+"</div>");
+}
+function review(){
+  const missed=QB.map((q,i)=>i).filter(i=>P.q[i]&&P.q[i].w>0);
+  const stubborn=missed.filter(i=>P.q[i].w>P.q[i].r);
+  if(!missed.length){view('<span class="crumb" onclick="go(\'home\')">← Dashboard</span><div class="card"><h2>Review misses</h2><p class="sub">Nothing to review yet — answer some questions first and your misses will collect here.</p></div>');return}
+  view(`<span class="crumb" onclick="go('home')">← Dashboard</span>
+  <div class="card"><h2>Review misses</h2>
+  <p class="sub">You've missed ${missed.length} distinct questions; ${stubborn.length} are still net-negative (more wrong than right).</p>
+  <div class="btnrow">
+    ${stubborn.length?'<button class="btn" onclick="startSession({mode:\'practice\',list:shuffle(['+stubborn+']).slice(0,25),label:\'Stubborn-miss drill\'})">Drill stubborn misses →</button>':""}
+    <button class="${stubborn.length?"btn2":"btn"}" onclick="startSession({mode:'practice',list:shuffle([${missed}]).slice(0,25),label:'Miss review'})">Drill all misses →</button>
+  </div></div>`);
+}
+
+/* ---------- keyboard ---------- */
+document.addEventListener("keydown",e=>{
+  if(e.target.tagName==="INPUT")return;
+  if(F){if(e.key===" "){e.preventDefault();flipCard()}else if(F.flipped&&(e.key==="1"||e.key.toLowerCase()==="x"))gradeCard(false);else if(F.flipped&&(e.key==="2"||e.key.toLowerCase()==="k"))gradeCard(true);return}
+  if(!S)return;
+  if(S.phase==="question"){
+    const k=e.key.toLowerCase();
+    const idx="abcd".indexOf(k)>=0?"abcd".indexOf(k):("1234".indexOf(k)>=0?"1234".indexOf(k):-1);
+    if(idx>=0&&idx<QB[S.list[S.i]].c.length)pick(idx);
+  }else if(S.phase==="feedback"&&e.key==="Enter")nextQ();
+});
+
+/* ---------- boot ---------- */
+home();
+</script>
+</body>
+</html>
